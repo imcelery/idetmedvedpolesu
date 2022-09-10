@@ -1,1 +1,3 @@
 # idetmedvedpolesu
+viditmashinagorit
+selvneeisgorel
