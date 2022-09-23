@@ -93,6 +93,7 @@ def printmap(array, pos):
             a += " "
         print(a)
 if __name__ == '__main__':
+    #ширина 5 клеток, высота 5 клеток, процент заполнения тунелями - 20
     lab, pos = genlab(5, 5, 20)
     #printmap(lab, pos)
     rot = 0
