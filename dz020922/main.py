@@ -76,25 +76,23 @@ def genlab(width, height, fillpersent):
             break
 
     return Map, pos
+
+graf = {0:"@", 1:"_",2:"b",3:"w"}
 def printmap(array, pos):
     for i in range(len(array)):
         a = ""
         for j in range(len(array[0])):
             if i == pos[0] and j == pos[1]:
                 a += "p"
-            elif array[i][j] == 0:
-                a += "_"
-            elif array[i][j] == 1:
-                a += "@"
-            elif array[i][j] == 2:
-                a += "b"
             else:
-                a += "w"
+                a += graf.get(array[i][j])
             a += " "
         print(a)
+        
+        
 if __name__ == '__main__':
-    lab, pos = genlab(5, 5, 20)
-    #printmap(lab, pos)
+    lab, pos = genlab(50, 50, 20)
+    printmap(lab, pos)
     rot = 0
     print("""Ты - крот, который немножко заблудился. Твоя задача - 
 на ощупь найти выход из подземных тунелей. 
