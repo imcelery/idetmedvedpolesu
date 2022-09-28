@@ -20,9 +20,11 @@ def sort_p(a):
 
 def sort_v(a):
     for i in range(1, len(a)):
-        for j in range(i - 1, -1):
-            if a[j] > a[i]:
-                a[j], a[i] =  a[i], a[j]
+        xi = i
+        for j in range(i - 1, -1, -1):
+            if a[j] > a[xi]:
+                a[j], a[xi] = a[xi], a[j]
+                xi -= 1
             else:
                 break
 
