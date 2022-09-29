@@ -10,13 +10,16 @@ def search_min(a, start):
 def sort_vi(a):
     for i in range(len(a) - 1):
         m_i = search_min(a, i)
-        a[i], a[m_i]  = a[m_i], a[i]
+        a[i], a[m_i] = a[m_i], a[i]
+    return a
 
 def sort_p(a):
-    for i in range(len(a)):
-        for j in range(len(a) - 1):
-            if a[i] > a[i + 1]:
-                a[i], a[i + 1] = a[i + 1],  a[i]
+    for i in range(len(a) - 1):
+        xi = i
+        for j in range(i + 1, len(a)):
+            if a[xi] > a[j]:
+                a[xi], a[j] = a[j],  a[xi]
+    return a
 
 def sort_v(a):
     for i in range(1, len(a)):
@@ -27,6 +30,7 @@ def sort_v(a):
                 xi -= 1
             else:
                 break
+    return a
 
 def serge(a, b):
     ai = 0
