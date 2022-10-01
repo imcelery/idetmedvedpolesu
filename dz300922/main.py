@@ -29,11 +29,17 @@ def findall(r, url, d = [], v = [], start=0,):
                 b = r.find('"', a)
                 if -1 == r.find(url, a, b) and -1 != r.find("https://", a, b):
                     if r[a: b] not in d:
-                        d.append(r[a: b])
+                        d.append([r[a: b], a, b])
                 else:
                     if r[a: b] not in v:
-                        v.append(r[a: b])
+                        v.append([r[a: b], a, b])
         return findall(r, url, d, v, a)
     return d, v
+
+def rename(r, url):
+    d, v = findall(r, url)
+    a = []
+    a.append(r[v[0][1], v[0][2]])
+
 
 print(findall(r, url))
