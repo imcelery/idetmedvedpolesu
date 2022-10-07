@@ -35,7 +35,7 @@ if __name__ == '__main__':
     d = []
     c = []
     for i in range(len(a)):
-        if a[i] not in b:
-            b.append(a[i])
+        if a[i] not in d:
+            d.append(a[i])
     for i in b:
-        print(b[binsearch(b, i)])
+        print(d[binsearch(d, i)])

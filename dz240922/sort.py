@@ -3,17 +3,19 @@ def search_min(a, start):
     min_i = start
     for i in range(start, len(a)):
         if a[i] < m:
-            m  = a[i]
+            m = a[i]
             min_i = i
     return min_i
 
 def sort_vi(a):
-    for i in range(len(a) - 1):
-        m_i = search_min(a, i)
-        a[i], a[m_i] = a[m_i], a[i]
-    return a
+    b = a.copy()
+    for i in range(len(b) - 1):
+        m_i = search_min(b, i)
+        b[i], b[m_i] = b[m_i],b[i]
+    return b
 
-def sort_p(a):
+def sort_p(b):
+    a = b.copy()
     for i in range(len(a) - 1):
         xi = i
         for j in range(i + 1, len(a)):
@@ -21,7 +23,8 @@ def sort_p(a):
                 a[xi], a[j] = a[j],  a[xi]
     return a
 
-def sort_v(a):
+def sort_v(b):
+    a = b.copy()
     for i in range(1, len(a)):
         xi = i
         for j in range(i - 1, -1, -1):
@@ -41,7 +44,7 @@ def serge(a, b):
             c.append(a[ai])
             ai += 1
         else:
-            b.append(b[bi])
+            c.append(b[bi])
             bi += 1
     while ai < len(a):
         c.append(a[ai])
@@ -51,10 +54,11 @@ def serge(a, b):
         bi += 1
     return c
 
-def sort_serge(a):
+def sort_serge(b):
+    a = b.copy()
     if len(a) <= 1:
         return a
-    k = len(a) //2
+    k = len(a) // 2
     b1 = sort_serge(a[:k])
     b2 = sort_serge(a[k:])
     return serge(b1, b2)

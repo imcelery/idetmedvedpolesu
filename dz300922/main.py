@@ -39,7 +39,13 @@ def findall(r, url, d = [], v = [], start=0,):
 def rename(r, url):
     d, v = findall(r, url)
     a = []
-    a.append(r[v[0][1], v[0][2]])
+    a.append(r[v[0][1] - 1])
+    for i in range(0, len(v)):
+        a.append(url + r[v[i][1]: v[i][2]])
+        if i == len(v):
+            a.append(r[v[i][2]: v[i + 1][1]])
+        else:
+            a.append(r[v[i][2]: len(r)])
+    return "".join(a)
 
-
-print(findall(r, url))
+print(rename(r, url))
