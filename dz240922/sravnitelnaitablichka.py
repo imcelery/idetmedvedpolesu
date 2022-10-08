@@ -3,10 +3,10 @@ import random
 import time
 import matplotlib.pyplot as plt
 if __name__ == "__main__":
-    config = list(range(1, 10000, 100))
+    config = list(range(1, 1000, 10))
     minim, maxim  = -100, 100
-    kolvotestov = 1
-    #
+    kolvotestov = 10
+    
     d = {"sort_vi": [sort_vi, []], "sort_p": [sort_p, []], "sort_v": [sort_v, []], "sort_serge": [sort_serge, []]}
     m = []
     for i in config:
