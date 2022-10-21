@@ -1,7 +1,8 @@
 import sys
 
 import imlyc
-
+def ad(a):
+    a = []
 if __name__ == '__main__':
     name = "4.jpg"
     # if len(sys.argv) == 2:
@@ -11,4 +12,10 @@ if __name__ == '__main__':
     img.blur()
     img.save_img("lgrey.jpg")
     i = 1
+    while True:
+        print(i)
+        img = imlyc.ImageL("lgrey.jpg")
+        img.blur()
+        img.save_img("lgrey.jpg")
+        i += 1
 

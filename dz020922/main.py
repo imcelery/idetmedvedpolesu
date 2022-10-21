@@ -91,14 +91,11 @@ def printmap(array, pos):
         
         
 if __name__ == '__main__':
-<<<<<<< HEAD
-    lab, pos = genlab(50, 50, 20)
+
+    lab, pos = genlab(200, 200, 60)
     printmap(lab, pos)
-=======
+
     #ширина 5 клеток, высота 5 клеток, процент заполнения тунелями - 20
-    lab, pos = genlab(5, 5, 20)
-    #printmap(lab, pos)
->>>>>>> 06322d64f3ac5f3fda8c545ec4e1ddffe37233c0
     rot = 0
     print("""Ты - крот, который немножко заблудился. Твоя задача - 
 на ощупь найти выход из подземных тунелей. 

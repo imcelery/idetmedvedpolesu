@@ -40,7 +40,11 @@ class ImageL:
         return n_a
 
     def blur(self):
-        g_a = np.ones((10, 10))
+        #g_a = np.ones((10, 10))
+        g_a = np.array([[1, 5, 5, 1],
+               [5, 0, 0, 5],
+               [5, 0, 0, 5],
+               [1, 5, 5, 1],])
         b = g_a.shape[0] // 2
         n_a = np.zeros(self.img.shape, dtype=np.uint8)
         n_ch = np.ones((2 * b + n_a.shape[0], 2 * b + n_a.shape[1], n_a.shape[2]), dtype=np.uint8)
