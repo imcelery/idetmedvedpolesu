@@ -1,11 +1,11 @@
 import os
 
 def rename(oldname, newname, directory):
-    res = os.system(directory)
-    # + " git mv " + oldname + " " + newname
+    print("git mv " + oldname + " " + newname)
+
 
 if __name__ == '__main__':
-    path = "Y:\idetmedvedpolesu"
+    path = "D:\\homework_git\\idetmedvedpolesu"
     dirs = os.listdir(path=path)
     for i in dirs:
         if i[:2] == "dz" and len(i) != 10:
