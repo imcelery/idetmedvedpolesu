@@ -1,7 +1,9 @@
 import random
-costil = [(1, 0), (0, -1), (-1, 0), (0, 1)]
-def genlab(width, height, fillpersent):
 
+costil = ((1, 0), (0, -1), (-1, 0), (0, 1))
+
+
+def genlab(width, height, fillpersent):
     Map = []
     for i in range(height):
         g = []
@@ -43,7 +45,8 @@ def genlab(width, height, fillpersent):
                                     newnewtons.append((b, c))
                                     h += 1
                                 else:
-                                    if Map[b + costil[f[0]][0] + costil[f[1]][0]][c + costil[f[0]][1] + costil[f[1]][1]] == 0:
+                                    if Map[b + costil[f[0]][0] + costil[f[1]][0]][
+                                        c + costil[f[0]][1] + costil[f[1]][1]] == 0:
                                         Map[b][c] = 1
                                         newnewtons.append((b, c))
                                         h += 1
@@ -53,7 +56,7 @@ def genlab(width, height, fillpersent):
                 if not newtons[i] in tons:
                     tons.append(newtons[i])
             newtons = newnewtons
-        newtons = [tons[random.randint(0, len(tons)-1)]]
+        newtons = [tons[random.randint(0, len(tons) - 1)]]
     a = False
 
     for i in range(height):
@@ -61,7 +64,7 @@ def genlab(width, height, fillpersent):
             if Map[i][j] == 1:
                 Map[i][j] = 2
                 a = True
-                pos = [i,j]
+                pos = [i, j]
                 break
         if a:
             break
@@ -77,25 +80,11 @@ def genlab(width, height, fillpersent):
 
     return Map, pos
 
-graf = {0:"@", 1:"_",2:"b",3:"w"}
-def printmap(array, pos):
-    for i in range(len(array)):
-        a = ""
-        for j in range(len(array[0])):
-            if i == pos[0] and j == pos[1]:
-                a += "p"
-            else:
-                a += graf.get(array[i][j])
-            a += " "
-        print(a)
-        
-        
+
 if __name__ == '__main__':
-
-    lab, pos = genlab(200, 200, 60)
-    printmap(lab, pos)
-
-    #ширина 5 клеток, высота 5 клеток, процент заполнения тунелями - 20
+    # ширина 5 клеток, высота 5 клеток, процент заполнения тунелями - 20
+    lab, pos = genlab(15, 15, 50)
+    # printmap(lab, pos)
     rot = 0
     print("""Ты - крот, который немножко заблудился. Твоя задача - 
 на ощупь найти выход из подземных тунелей. 
@@ -105,7 +94,7 @@ if __name__ == '__main__':
     while lab[pos[0]][pos[1]] != 3:
         a = input()
         if a == "w":
-            if lab[pos[0] + costil[rot][0]][pos[1]+ costil[rot][1]] == 0:
+            if lab[pos[0] + costil[rot][0]][pos[1] + costil[rot][1]] == 0:
                 print("Впереди стена")
             else:
                 print("Ты продвинулся")
@@ -113,14 +102,15 @@ if __name__ == '__main__':
                 pos[1] += costil[rot][1]
         if a == "r":
             rot += 1
-            if rot == 4: rot = 0
-            if lab[pos[0] + costil[rot][0]][pos[1]+ costil[rot][1]] == 0:
+            rot %= 4
+
+            if lab[pos[0] + costil[rot][0]][pos[1] + costil[rot][1]] == 0:
                 print("Ты повернулся вправо, впереди стена")
             else:
                 print("Ты повернулся вправо, впереди нет стены")
         if a == "l":
             rot -= 1
-            if rot == -1: rot = 3
+            rot %= 4
             if lab[pos[0] + costil[rot][0]][pos[1] + costil[rot][1]] == 0:
                 print("Ты повернулся влево, впереди стена")
             else:
