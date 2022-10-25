@@ -1,2 +1,2 @@
-Site: a  Username: c  Password:  123
-Site: a  Username: b  Password:  123
+a c 123
+a b 123
