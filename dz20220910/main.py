@@ -21,14 +21,14 @@ def fd(n):
 if __name__ == '__main__':
     values = [50, 10, 36, 10, 1000]
 
-    start_time =datetime.now()
+    start_time = datetime.now()
     for j in range(100000):
         for i in values:
             f(i)
-    a = datetime.now()  - start_time
+    a = datetime.now() - start_time
     start_time = datetime.now()
     for j in range(100000):
         for i in values:
             fd(i)
-    b = datetime.now()  - start_time
-    print(a, b)
+    b = datetime.now() - start_time
+    print(f"массив : {a} словарь : {b}")

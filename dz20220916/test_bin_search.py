@@ -7,16 +7,16 @@ class Test(TestCase):
         self.a = [el**2 for el in range(28)]
 
     def test_binsearch(self):
-        self.assertEqual(binsearch(self.a, 4) ,2)
+        self.assertEqual(binsearch(self.a, 4), 2)
 
     def test_binsearch2(self):
-        self.assertEqual(binsearch(self.a, 5) ,2)
+        self.assertEqual(binsearch(self.a, 5), 2)
 
     def test_binsearch3(self):
-        self.assertEqual(binsearch(self.a, -23) ,0)
+        self.assertEqual(binsearch(self.a, -23), 0)
 
     def test_binsearch4(self):
-        self.assertEqual(binsearch(self.a, 1000) ,27)
+        self.assertEqual(binsearch(self.a, 1000), 27)
 
 
 class Test2(TestCase):
