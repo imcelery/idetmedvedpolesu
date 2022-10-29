@@ -10,8 +10,9 @@ def f(n):
     return a[n]
 
 #через словарь
-memo = {1: 1, 2: 1}
+
 def fd(n):
+    memo = {1: 1, 2: 1}
     if n not in memo:
         memo[n] = fd(n-1)+fd(n-2)
     return memo[n]

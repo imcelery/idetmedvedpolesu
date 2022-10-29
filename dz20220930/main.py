@@ -1,11 +1,10 @@
 import requests
-url = "https://www.gimp.org/"
-r = requests.get(url).text
-ssilki = []
+
 
 
 def is_sawed(url):
-    return url in ssilki
+    global pages
+    return url in pages
 
 
 def load_html(url):
@@ -17,9 +16,7 @@ def save_html(txt, name):
         f.write(txt)
 
 
-save_html(r, "сайт.html")
-
-def findall(r, url, d = [], v = [], start=0,):
+def findall(r, url, d=[], v=[], start=0,):
     start_i = r.find('<a ', start)
     if start_i != -1:
         c = r.find('>', start_i)
@@ -36,16 +33,40 @@ def findall(r, url, d = [], v = [], start=0,):
         return findall(r, url, d, v, a)
     return d, v
 
-def rename(r, url):
+
+def rename(url):
+    r = load_html(url)
     d, v = findall(r, url)
     a = []
     a.append(r[v[0][1] - 1])
     for i in range(0, len(v)):
-        a.append(url + r[v[i][1]: v[i][2]])
+        urln = url + r[v[i][1]: v[i][2]]
+        a.append(urln)
         if i == len(v):
             a.append(r[v[i][2]: v[i + 1][1]])
         else:
             a.append(r[v[i][2]: len(r)])
     return "".join(a)
 
-print(rename(r, url))
+def renameallandsafe(url):
+    global pages
+    print(pages)
+    if not is_sawed(url):
+        save_html(rename(url),  "site.html")
+        pages.append(url)
+        r = load_html(url)
+        d, v = findall(r, url)
+        print(v)
+        for i in range(0, len(v)):
+            urln = url + r[v[i][1] + 1: v[i][2]]
+            if not is_sawed(urln):
+                renameallandsafe(urln)
+
+
+
+
+
+if __name__ == "__main__":
+    url = "https://www.gimp.org/"
+    pages = []
+    renameallandsafe(url)
