@@ -1,10 +1,13 @@
 import requests
 
-import time
+from bs4 import BeautifulSoup
+import lxml
+
 
 url = "https://yandex.ru/pogoda/"
-response = requests.get(url)
-find_text = """<a class="link fact__basic fact__basic_size_wide day-anchor i-bem" tabindex="0" href="/pogoda/details?lat=56.838011&amp;lon=60.597465&amp;via=mf#11" aria-label="""
-n = response.text.find(find_text)
 
-print(response.text[n+ len(find_text) + 1: n + response.text[n + len(find_text):].find(" data-bem") + len(find_text) - 1])
+response = requests.get(url)
+soup = BeautifulSoup(response.text, 'lxml')
+
+print(soup.find(class_="temp__value temp__value_with-unit").text)
+print(soup.find(class_="fact__temp-wrap").find("a").label)
