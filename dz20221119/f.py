@@ -4,7 +4,8 @@ def f(s):
     b = []
     i = len(a) - 1
     while i != -1:
-        if a[i] == "0":
+        if a[i] == "0" and int(a[i-2]+a[i-1]) >= 10:
+
             b.append(a[i-2]+a[i-1])
             a[i] = "!"
             a.pop(i - 1)
