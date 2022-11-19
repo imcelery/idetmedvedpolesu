@@ -1,8 +1,12 @@
 
 def getg(n, d):
-    delit = []
-    for i in range(1, n // 2 + 1, d):
+    delit = [1]
+    for i in range(1, n // 2 + 1):
         if n % i == 0:
+
+            if len(delit) != 0:
+                if i - delit[-1] < d:
+                    return False
             delit.append(i)
     delit.append(n)
     if len(delit) > 3:
@@ -11,9 +15,9 @@ def getg(n, d):
         return False
 
 def f(d):
-    a = 1
+    a = (1 + d) * (1 + 2 * d)
     while getg(a, d) == False:
-        a += 1
+        a += d
     return a
 
 
