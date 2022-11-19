@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a7e43aec-45c1-40e6-b9e3-4eac605dcbe3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../dz20220910/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../dz20220910/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dz20221119/.idea/dz20221119.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../dz20221119/.idea/dz20221119.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dz20221119/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../dz20221119/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dz20221119/b.py" beforeDir="false" afterPath="$PROJECT_DIR$/../dz20221119/b.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dz20221119/e.py" beforeDir="false" afterPath="$PROJECT_DIR$/../dz20221119/e.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -11,6 +14,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2EsaT95Pc0CvSdPRtPpTaoavimd" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
