@@ -1,34 +1,30 @@
-def f(x, y):
-    return x - y
 
-def binsearch(a, el, x) -> int:
+def binsearch(a, el) -> int:
     start = 0
     finish = len(a) - 1
     while start <= finish:
         i = (finish + start) // 2
-        d = f(x, a[i])
+        d = a[i]
 
         if d == el:
             return i
-        elif d > el:
-            start = i + 1
-        elif d < el:
-            finish = i - 1
-    if f(x, a[i]) > el:
-        if i < len(a):
-            return i + 1
-        else:
-            return i
-    else:
-        return i
 
+        elif d < el:
+            start = i + 1
+        elif d > el:
+            finish = i - 1
+
+    if a[i] < el:
+        return i
+    else:
+        return i - 1
 
 def beaty(l, d):
     a = 0
-    for i in range(2, len(l)):
-        k = binsearch(l[:i], d, l[i])
+    for i in range(0, len(l) - 2):
+        k = binsearch(l[i:], l[i] + d)
+        a += (k - 1) * k // 2
 
-        a += (i - k - 1) * (i - k) // 2
 
     return a
 

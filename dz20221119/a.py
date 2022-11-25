@@ -1,27 +1,28 @@
+def pt(n):
+    i = n
+    if i == 2:
+        return 2
+    if i % 2 == 0:
+        i += 1
+    while True:
+        a = True
+        for j in range(3, n//2, 2):
+            if i % j == 0:
+                i += 2
+                a = False
+                break
+        if a:
+            return i
 
-def getg(n, d):
-    delit = [1]
-    for i in range(1, n // 2 + 1):
-        if n % i == 0:
-
-            if len(delit) != 0:
-                if i - delit[-1] < d:
-                    return False
-            delit.append(i)
-    delit.append(n)
-    if len(delit) > 3:
-        return True
-    else:
-        return False
 
 def f(d):
-    a = (1 + d) * (1 + 2 * d)
-    while getg(a, d) == False:
-        a += d
+    b = pt(d + 1)
+    a = b * pt(d + b)
     return a
 
 
 if __name__ == '__main__':
+
     n = int(input())
     for i in range(n):
         d = int(input())
