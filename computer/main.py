@@ -1,21 +1,22 @@
-from ventils import And, Or, Not, Provod, Lamp
-
+from ventils import WireIn, Lamp
+from adders import BinaryAdder, NAdder
 
 if __name__ == '__main__':
-    and1 = And()
-    or1 = Or()
-    lamp1 = Lamp()
+
+    adder = NAdder(2)
 
 
-    provod1 = Provod()
-    provod2 = Provod()
+    l = []
+    for i in range(2 + 1):
+        l.append(Lamp(i))
 
-    provod1.set_out(or1.in1)
-    provod2.set_out(or1.in2)
+    o = []
+    for i in l:
+        o.append(i.in1)
 
-    or1.set_out(lamp1.in1)
+    adder.set_out(o)
 
-    provod1.set_signal(0)
-    provod2.set_signal(0)
+    adder.in_a([1, 1])
+    adder.in_b([0, 0])
 
 
