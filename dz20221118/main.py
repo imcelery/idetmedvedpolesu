@@ -6,13 +6,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 
-
-
-
-
-
-
-
 def show(l:list, sr:int,  k=-1):
     if k == -1:
         k = len(l)
@@ -22,10 +15,23 @@ def show(l:list, sr:int,  k=-1):
     labels = np.arange(0, t, step=1)
     x = np.arange(0, len(graf), step=len(graf)//t)
     plt.xticks(x, labels)
-    # plt.xlabel('секунды')
-    # plt.ylabel('амплитуда?')
+    plt.xlabel('время (секунды)')
 
     plt.show()
+
+def get_hige(y:list):
+    znak = -(y[0] - y[1])
+    i = 1
+    if znak > 0:
+        while y[i] < y[i + 1]:
+            i += 1
+        return y[i + 1]
+    if znak < 0:
+        while y[i] > y[i + 1]:
+            i += 1
+        return y[i + 1]
+
+
 
 
 
@@ -67,12 +73,11 @@ def sinosoida(frequency, amplitude, sr, t=1):
     sf.write('stereo_file1.wav', s, sr, 'PCM_24')
     return s
 
+if __name__ == "__main__":
 
+    y, sr = librosa.load('zvuk-komara-pisk-komara-28624.wav')
 
-y, sr = librosa.load('zvuk-komara-pisk-komara-28624.wav')
-
-s = sinosoida(get_middle_frequency(y, sr), 8, 20050, 2)
-print(get_middle_frequency(y, sr))
+    show(y, sr)
 
 
 
