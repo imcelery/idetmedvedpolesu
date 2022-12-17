@@ -14,6 +14,10 @@ d = {
     "34": "Перейти если не перенос",
     "40": "Сдвиг влево",
     "41": "Сдвиг вправо",
+    "50": "not",
+    "51": "and",
+    "52": "or",
+    "53": "xor",
     "ff": "Остановить",
 }
 class Computer:
@@ -26,6 +30,7 @@ class Computer:
         self.__sub = 0  # признак вычитания
         self.p = 0  # выход для переноса
         self.transfer = 0  # складывать с переносом или вычитать с заимствованием
+        self.is_sum = False
 
     @property
     def a(self):
@@ -35,12 +40,17 @@ class Computer:
     @a.setter
     def a(self, value):
         if self.transfer:
-            value += self.p
+            if self.__sub:
+                value -= self.p
+            else:
+                value += self.p
             self.transfer = 0
         # print(value)
         # print(value & int("100000000", 2))
         # print(((value & int("100000000", 2)) ^ self.__sub) >> 8)
-        self.p = ((value & int("100000000", 2)) ^ self.__sub) >> 8
+        if self.is_sum or self.__sub:
+            self.p = ((value & int("100000000", 2)) ^ self.__sub) >> 8
+            self.is_sum = False
         self.__a = value & int("11111111", 2)
         self.__sub = 0
 
@@ -68,6 +78,7 @@ class Computer:
         self.i += 2
 
     def _add(self):
+        self.is_sum = True
         addr = self._do_command()
         self.a += self.mem[addr]
         self.i += 2
@@ -95,6 +106,7 @@ class Computer:
             self.i += 2
 
     def jump_if_transfer(self):
+        print(self.a)
         addr = self._do_command()
         if self.p == 1:
             self.i = addr - 1
@@ -129,6 +141,26 @@ class Computer:
         self.transfer = 1
         self._sub()
 
+    def _not(self):
+        addr = self._do_command()
+        self.a = ~self.a
+        self.i += 2
+
+    def _and(self):
+        addr = self._do_command()
+        self.a &= self.mem[addr]
+        self.i += 2
+
+    def _or(self):
+        addr = self._do_command()
+        self.a |= self.mem[addr]
+        self.i += 2
+
+    def _xor(self):
+        addr = self._do_command()
+        self.a ^= self.mem[addr]
+        self.i += 2
+
     def _parse_addr(self, val):
         return int(val, 16)
 
@@ -143,6 +175,8 @@ class Computer:
                     comment = comment.strip()
                 else:
                     comment = ""
+                if len(line.strip()) == 0:
+                    continue
                 r = line.strip().split()
                 if len(r) == 2:
                     addr, data = r
@@ -185,6 +219,14 @@ class Computer:
                 self.left_shift()
             elif self.mem[self.i] == int("41", 16):
                 self.right_shift()
+            elif self.mem[self.i] == int("50", 16):
+                self._not()
+            elif self.mem[self.i] == int("51", 16):
+                self._and()
+            elif self.mem[self.i] == int("52", 16):
+                self._or()
+            elif self.mem[self.i] == int("53", 16):
+                self._xor()
             elif self.mem[self.i] == int("FF", 16):
                 self._index_use.add(self.i)
                 self._index_use.add(self.i+1)

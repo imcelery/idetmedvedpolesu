@@ -1,5 +1,6 @@
 import requests
-
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 
 def is_sawed(url, pages):
@@ -7,7 +8,13 @@ def is_sawed(url, pages):
 
 
 def load_html(url):
-    return requests.get(url).text
+    try:
+        page1 = requests.get(url).text
+        return page1
+    except requests.exceptions.ConnectionError:
+        requests.status_code = "Connection refused"
+        return None
+
 
 
 def save_html(txt, name):
@@ -45,31 +52,32 @@ def rename(url, r, v):
             a.append(r[v[i][2]: len(r)])
     return "".join(a)
 
-def renameallandsafe(main_url, url = None, pages = [], inpages = []):
+def renameallandsafe( main_url, url = None, pages = [], inpages = []):
     if url == None:
         url = main_url
     if not is_sawed(url, pages):
         r = load_html(url)
-        d, v = findall(r, url)
+        if r is not None:
+            d, v = findall(r, url)
 
-        r = rename(url, r, v)
+            r = rename(url, r, v)
 
-        name = url[8:].replace("/", "_")
-        save_html(r, f"site/{name}.txt")
-        pages.append(url)
+            name = url[8:].replace("/", "_")
+            save_html(r, f"site/{name}.txt")
+            pages.append(url)
 
-        for i in v:
-            if i[0] not in inpages:
+            for i in v:
+                if i[0] not in inpages:
 
-                inpages.append(i[0])
-                m, n = renameallandsafe(main_url, f"{main_url}{i[0]}", pages, inpages)
-                for j in m:
-                    if j not in pages:
-                        pages.append(m)
+                    inpages.append(i[0])
+                    m, n = renameallandsafe(main_url, f"{main_url}{i[0]}", pages, inpages)
+                    for j in m:
+                        if j not in pages:
+                            pages.append(m)
 
-                for j in n:
-                    if j not in inpages:
-                        pages.append(n)
+                    for j in n:
+                        if j not in inpages:
+                            pages.append(n)
 
     return pages, inpages
 
@@ -80,4 +88,5 @@ def renameallandsafe(main_url, url = None, pages = [], inpages = []):
 
 if __name__ == "__main__":
     url = "https://www.gimp.org"
+
     renameallandsafe(url)

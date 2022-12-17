@@ -152,4 +152,3 @@ class Xor(And):
         self._or.in2(self._in2)
         self._and_not.in2(self._in2)
         return self._wire.get_signal()
-

@@ -277,7 +277,7 @@ class Invertor8:
             self._out(out)
             self._set_none()
 
-
+# сумматор с минусом
 class BinMinuserPluser8:
     def __init__(self):
         self._n = 8
@@ -334,9 +334,7 @@ class BinMinuserPluser8:
         # attr = "in_a0" or "in_b0" or "in_ci"
         # i = 0, s = a
         # print("__getattr__ run", attr, len(attr), attr[:3])
-        if len(attr) > 4 and (attr[:4] == "in_a" \
-                              or attr[:4] == "in_b" \
-                              or attr == "in_ci"):
+        if len(attr) > 4 and (attr[:4] == "in_a" or attr[:4] == "in_b" or attr == "in_ci"):
 
             if attr != "in_ci":
                 i = int(attr[4:])
@@ -352,15 +350,13 @@ class BinMinuserPluser8:
 
     def _in_summary(self, i, s, value):
         if s == "c":
-            self._in_ci = value
+            self._minis = value
         elif s == "a":
             self._in_a[i] = value
         else:
             self._in_b[i] = value
 
-        if np.all(np.any(self._in) is not None) \
-                and np.all(self._in_b) is not None \
-                and self._minus is not None:
+        if np.all(np.any(self._in) is not None) and np.all(self._in_b) is not None and self._minus is not None:
             out_co, *out_s = self._result()
 
             for i, el in enumerate(out_s):

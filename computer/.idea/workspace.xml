@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="712c3a99-f25b-4e8e-b119-b15e2c91f6f9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../anotherSomeProject/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../anotherSomeProject/.idea/anotherSomeProject.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../anotherSomeProject/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../anotherSomeProject/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../anotherSomeProject/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../anotherSomeProject/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../anotherSomeProject/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assambler/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assambler/.idea/assambler.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assambler/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assambler/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assambler/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assambler/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assambler/out.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assambler/program0.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assambler/program1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assambler/program2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assambler/program3.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assambler/program4.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assambler/program5.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../assambler/test_main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/adders.py" beforeDir="false" afterPath="$PROJECT_DIR$/adders.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_adders.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_adders.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ventils.py" beforeDir="false" afterPath="$PROJECT_DIR$/ventils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dz20220930/.idea/dz300922.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../dz20220930/.idea/dz300922.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dz20220930/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../dz20220930/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dz20220930/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../dz20220930/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dz20221118/.idea/dz20221118.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../dz20221118/.idea/dz20221118.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dz20221118/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../dz20221118/.idea/misc.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/adders.py" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="ProjectId" id="2J1dqa8S4eYRSjfFRRK0DZwjaf8" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RunManager">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="712c3a99-f25b-4e8e-b119-b15e2c91f6f9" name="Changes" comment="" />
+      <created>1671249716111</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1671249716111</updated>
+    </task>
+    <servers />
+  </component>
+</project>
