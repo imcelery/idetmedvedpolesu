@@ -20,3 +20,12 @@ class Test(TestCase):
 
     def test_5(self):
         main("program5.txt", "out.txt")
+
+    def test_6(self):
+        main("program6.txt", "out.txt")
+
+    def test_7(self):
+        main("program7.txt", "out.txt")
+
+    def test_8(self):
+        main("program8.txt", "out.txt")
