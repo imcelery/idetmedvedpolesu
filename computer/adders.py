@@ -1,4 +1,7 @@
-from ventils import Xor, And, WireOut, Or
+import math
+
+from ventils import Xor, And, WireOut, Or, WireIn, MultiplyWire, OrNot, Not, Or8, And4
+
 import numpy as np
 
 
@@ -162,13 +165,17 @@ class BinaryAdder8:
         self._out_s = out2
 
     def _result(self):
+
         for i in range(self._n):
             self._ba[i].in_a(self._in_a[i])
             self._ba[i].in_b(self._in_b[i])
+
         self._ba[0].in_ci(self._in_ci)
+
         res = [self._wire_co.get_signal()]
         for i in range(self._n):
             res.append(self._wire_out[i].get_signal())
+
         return res
 
     def __getattr__(self, attr):
@@ -191,15 +198,25 @@ class BinaryAdder8:
 
     def _in_summary(self, i, s, value):
         if s == "c":
+
             self._in_ci = value
         elif s == "a":
             self._in_a[i] = value
         else:
             self._in_b[i] = value
 
-        if np.all(self._in_a) is not None \
-                and np.all(self._in_b) is not None \
-                and self._in_ci is not None:
+        a = True
+        for i in self._in_a:
+            if i is None:
+                a = False
+                break
+        b = True
+        for i in self._in_b:
+            if i is None:
+                b = False
+                break
+
+        if a and b and self._in_ci is not None:
             out_co, *out_s = self._result()
 
             for i, el in enumerate(out_s):
@@ -258,11 +275,17 @@ class Invertor8:
 
     def _in_summary(self, i, value):
         self._in[i] = value
+        a = True
+        for i in self._in:
+            if i is None:
+                a = False
+                break
 
-        if np.any(self._in) is not None and self._be_or_not_be is not None:
+        if a and self._be_or_not_be is not None:
+
             out = self._result()
-
-            self._out(out)
+            for i, el in enumerate(out):
+                self._out[i](el)
             self._set_none()
 
     def in_a(self, a:list) -> None:
@@ -271,10 +294,18 @@ class Invertor8:
 
     def in_b(self, value):
         self._be_or_not_be = value
-        if np.all(np.any(self._in) is not None) and self._be_or_not_be is not None:
+        a = True
+        for i in self._in:
+            if i is None:
+                a = False
+                break
+
+        if a:
+
             out = self._result()
 
-            self._out(out)
+            for i, el in enumerate(out):
+                self._out[i](el)
             self._set_none()
 
 
@@ -284,21 +315,28 @@ class BinMinuserPluser8:
         # входы A и B
         self._in_a = []
         self._in_b = []
-        self._minis = 0
+        self._in_ci = None
         # сумматоры
         self._ba8 = BinaryAdder8()
         self._invertor = Invertor8()
         self._invertor.set_out(self._ba8.in_b)
+        #  провода которые свяжут выход от инвертора с0 входами 8битного сумматора
+        self._wire_invertor_out = []
         #  провода которые свяжут выход от сумматоров с выходами 8битного сумматора
         self._wire_out = []
         # провод от выхода для переноса
         self._wire_co = WireOut()
 
         self._fxor = Xor()
+
+        self._fxor.set_out(self._wire_co.in1)
         self._out_s = []
         self._out_co = None
 
+
         wire_outsin = []
+
+        wire_outcos = []
 
         for i in range(self._n):
             self._out_s.append(None)
@@ -307,28 +345,44 @@ class BinMinuserPluser8:
             self._wire_out.append(WireOut())
             wire_outsin.append(self._wire_out[i].in1)
 
-        self._ba8.set_out(self._fxor_.in1, wire_outsin)
+            self._wire_invertor_out.append(WireOut())
+
+            wire_outcos.append(self._wire_invertor_out[i].in1)
+        self._ba8.set_out(self._fxor.in1, *wire_outsin)
+
+        self._invertor.set_out(list(reversed(wire_outcos)))
 
 
     def _set_none(self):
         # входы A и B
         self._in_a = [None] * self._n
         self._in_b = [None] * self._n
-        self._minis = None
+        self._in_ci = None
 
     def set_out(self, out1, *out2):
         self._out_co = out1
         self._out_s = out2
 
     def _result(self):
-        self._invertor.in_a(self._in_a)
-        self._invertor.in_b(self._minis)
 
-        self._ba8.in_ci(self._minis)
+        self._invertor.in_a(self._in_b)
+        self._invertor.in_b(self._in_ci)
+        res = []
+        for i in range(self._n):
+            res.append(self._wire_invertor_out[i].get_signal())
+        res = list(reversed(res))
+
+        self._ba8.in_a(list(reversed(self._in_a)))
+        self._ba8.in_b(res)
+        self._ba8.in_ci(self._in_ci)
+        self._fxor.in2(self._in_ci)
         res = [self._wire_co.get_signal()]
+
         for i in range(self._n):
             res.append(self._wire_out[i].get_signal())
+
         return res
+
 
     def __getattr__(self, attr):
         # attr = "in_a0" or "in_b0" or "in_ci"
@@ -358,9 +412,19 @@ class BinMinuserPluser8:
         else:
             self._in_b[i] = value
 
-        if np.all(np.any(self._in) is not None) \
-                and np.all(self._in_b) is not None \
-                and self._minus is not None:
+        a = True
+        for i in self._in_a:
+            if i is None:
+                a = False
+                break
+
+        b = True
+        for i in self._in_b:
+            if i is None:
+                b = False
+                break
+
+        if a and b and self._in_ci is not None:
             out_co, *out_s = self._result()
 
             for i, el in enumerate(out_s):
@@ -375,5 +439,7 @@ class BinMinuserPluser8:
     def in_b(self, b: list) -> None:
         for i in range(self._n):
             getattr(self, "in_b" + str(i))(b[self._n - i - 1])
+
+
 
 
