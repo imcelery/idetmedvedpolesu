@@ -32,12 +32,14 @@ if __name__ == '__main__':
     wire2.set_signal(1)
     t.in_a([0, 1, 1])
 
-    wire1.set_signal(1)
-    wire2.set_signal(0)
-    t.in_a([0, 0, 0])
 
     wire1.set_signal(0)
     wire2.set_signal(0)
+    t.in_a([0, 1, 1])
+
+    wire1.set_signal(0)
+    wire2.set_signal(1)
+    t.in_a([0, 0, 0])
 
 
 

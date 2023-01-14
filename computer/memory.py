@@ -577,36 +577,3 @@ class Ram8:
     def in_a(self, b:list) -> None:
         for i in range(math.ceil(self._n / 8) * 3):
             getattr(self, "in_a" + str(i))(b[math.ceil(self._n / 8) * 3 - i - 1])
-
-
-
-
-# class Clock:
-#     def __init__(self):
-#         self._no = Not()
-#         self._out = None
-#
-#         self._and = And()
-#
-#         self._wireout = MultiplyWire()
-#         self._wireoutfinal = WireOut()
-#
-#         self._wireout.set_out([ self._wireoutfinal.in1, self._and.in2])
-#         self._no.set_out(self._wireout.in1)
-#         self._and.set_out(self._no.in1)
-#         self._and.in2(0)
-#
-#     def set_out(self, out):
-#         self._out = out
-#
-#     def _result(self):
-#         self._and.in1(1)
-#         return self._wireoutfinal.get_signal()
-#
-#     def get_signal(self):
-#         self._out(self._result())
-
-
-
-
-

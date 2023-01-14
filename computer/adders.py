@@ -439,7 +439,3 @@ class BinMinuserPluser8:
     def in_b(self, b: list) -> None:
         for i in range(self._n):
             getattr(self, "in_b" + str(i))(b[self._n - i - 1])
-
-
-
-

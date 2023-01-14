@@ -3,6 +3,7 @@ from adders import HalfAdder, BinaryAdder8, BinaryAdder, Invertor8, BinMinuserPl
 from memory import Trigger, MemoryBit, Ram8, Selector8, BinaryMemory8, DeSelector8
 from ventils import WireIn, WireOut
 
+
 class TestHalfAdder(TestCase):
     def setUp(self) -> None:
         self.ha = HalfAdder()
@@ -153,6 +154,7 @@ class TestBinaryAdder8(TestCase):
         res = self.get_res()
         self.assertEqual([1,0,0,0,0,0,0,1,0], res)
 
+
 class TestInventor8(TestCase):
     def setUp(self) -> None:
         self.i8 = Invertor8()
@@ -232,6 +234,7 @@ class TestBinaryMinuserPluser8(TestCase):
         res = self.get_res()
         self.assertEqual([0,0,0,0,0,0,0,0,0], res)
 
+
 class TestMemory8(TestCase):
     def setUp(self) -> None:
         self.bm8 = BinaryMemory8()
@@ -263,6 +266,7 @@ class TestMemory8(TestCase):
         res = self.get_res()
         self.assertEqual([0,0,0,0,1,0,0,1], res)
 
+
 class TestSelector8(TestCase):
     def setUp(self) -> None:
         self.s8 = Selector8()
@@ -281,6 +285,7 @@ class TestSelector8(TestCase):
         self.s8.in_b([0,1,1])
         res = self.get_res()
         self.assertEqual(0, res)
+
 
 class TestDeSelector8(TestCase):
     def setUp(self) -> None:
@@ -305,7 +310,3 @@ class TestDeSelector8(TestCase):
         self.s8.in_b([0,0,0])
         res = self.get_res()
         self.assertEqual([0, 0, 0, 0, 0, 0, 0, 1], res)
-
-
-
-
