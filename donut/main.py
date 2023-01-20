@@ -151,5 +151,13 @@ if __name__ == "__main__":
 
             donut.cameraPosition = sub_vector(donut.cameraPosition,  mul_vector_by_scalar([[0], [1], [0], [1]], speed))
 
+        if keys[pygame.K_q]:
+            donut.cameraDirection = normalize(mul_matrix(RotationY(1), donut.cameraDirection))
+
+        elif keys[pygame.K_e]:
+
+            donut.cameraDirection = normalize(mul_matrix(RotationY(-1), donut.cameraDirection))
+        print(donut.cameraDirection)
+
 
         donut.drowObjects()
