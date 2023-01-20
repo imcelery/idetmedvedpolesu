@@ -18,7 +18,7 @@ class TestDoubleLinkedList(TestCase):
         self.assertEqual(self._linkedList.show(), "1 3")
 
     def test_insert(self):
-        self._linkedList.insert(1, 4)
+        self._linkedList.insert(self._linkedList.search(1), 4)
         self.assertEqual(self._linkedList.show(), "1 2 4 3")
 
     def test_get(self):

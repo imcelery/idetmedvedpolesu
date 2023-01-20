@@ -103,6 +103,7 @@ class DoubleLinkedList:
 
         self.len -= 1
 
+    #заменяем элемент
     def insert(self, link_el, value):
         if self.len > 0:
             # переустанавливеам ссылки на следущий и предыдущий у следущего и предыдущего
