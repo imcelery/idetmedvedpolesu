@@ -3,6 +3,7 @@ from collections import deque
 
 
 def first_unique_number(l: list) -> list:
+    # находим максемальный минимальный элесент
     minel = 0
     maxel = 0
     for i in l:
@@ -11,11 +12,14 @@ def first_unique_number(l: list) -> list:
 
         if maxel < i:
             maxel = i
+    # создаем массив нулей диапозоном max - min елементов
     b = [0 for _ in range(0, maxel - minel + 1)]
 
+    # проходимся по начальному массиву и заполняем ячейки нового соответсвующие числам из l
     for i in l:
         b[i - minel] += 1
 
+    # выводим торлько неповторяющиеся числа
     o = []
     for i in l:
         if b[i - minel] == 1:
@@ -38,7 +42,8 @@ def sort_stack(s: deque)-> None:
         s.append(s3.pop())
         s.append(s2.pop())
 
-
+    #раскладываем верхние i + 2 элемента на 2 стэка так чтобы i + 3 был меньше верхнего во втором стеке но больше чем верхний в третьем
+    # мы можем это сделать так как верхние i + 2 элемента уже отсортированны
     for i in range(len(s) - 2):
         for j in range(i + 2):
             s2.append(s.pop())
@@ -56,6 +61,7 @@ def sort_stack(s: deque)-> None:
         if not kos:
             s2.append(s.pop())
 
+        # собираем пирамидку обратно
         for j in range(len(s3)):
             s2.append(s3.pop())
 
@@ -63,10 +69,13 @@ def sort_stack(s: deque)-> None:
             s.append(s2.pop())
 
 def generate_binary_number(n: int) -> list[str]:
+    # создаем log2(n) очередей
     s = [deque() for _ in range(math.ceil(math.log2(n)))]
     b = 0
     for i in range(len(s)):
         s[i].append(b)
+    # подаем в первую очередь сигнал  01010101010....
+    # если в одной очереди видим комбинацию 10 подаем на следущую сигнал к изменению с 0 на 1 или наоборот
     b = int(not b)
     for _ in range(n):
         s[0].append(b)
@@ -85,12 +94,15 @@ def generate_binary_number(n: int) -> list[str]:
 
                 s[i].append(s[i][len(s[i]) - 1])
         b = int(not b)
+
+    # заполняем массив выводя с каждой очереди по биту
     o = []
     for _ in range(n):
         om = ""
         for i in range(len(s)- 1, -1, -1):
             om += str(s[i].popleft())
         o.append(om)
+
     return o
 
 
@@ -126,6 +138,7 @@ class LinkedList:
     def __add__(self, b):
         self.tail.next = b.head
         self.tail = b.tail
+        self._len += b.len
         return self
 
     def __repr__(self):
@@ -154,12 +167,20 @@ class LinkedList:
         return node.data
 
     def add_first(self, node: Node):
-        node.next = self.head
-        self.head = node
+        if (len(self) == 0):
+            self.__init__([node.data])
+        else:
+            node.next = self.head
+            self.head = node
+            self._len += 1
 
     def add_last(self, node: Node):
-        self.tail.next = node
-        self.tail = node
+        if (len(self) == 0):
+            self.__init__([node.data])
+        else:
+            self.tail.next = node
+            self.tail = node
+            self._len += 1
 
     def search(self, target_node_data):
         for node in self:
@@ -217,35 +238,62 @@ class LinkedList:
 
         raise Exception("Node with data '%s' not found" % target_node_data)
 
+    def sort(self):
+        self = merge_sort(self)
+
 def merge_sort(l):
     if len(l) > 1:
-        a = merge_sort(LinkedList([l[i] for i in range(len(l) // 2)]))
-        b = merge_sort(LinkedList([l[i + len(l) // 2] for i in range(len(l) - len(l) // 2)]))
+        # разделяем
+        a = [l[i] for i in range(len(l) // 2)]
+        b = [l[i + len(l) // 2] for i in range(len(l) - len(l) // 2)]
+
+        a = merge_sort(LinkedList(a))
+        b = merge_sort(LinkedList(b))
+
         ca = 0
         cb = 0
         o = LinkedList()
+
+
+        # власвствуем (соединяем)
         while ca < len(a) and cb < len(b):
+
             if a[ca] > b[cb]:
                 o.add_last(Node(b[cb]))
                 cb += 1
             else:
                 o.add_last(Node(a[ca]))
                 ca += 1
-        if ca + 1 == len(a):
+
+        if ca == len(a):
             for i in range(cb, len(b)):
                 o.add_last(Node(b[i]))
         else:
             for i in range(ca, len(a)):
                 o.add_last(Node(a[i]))
+
+        return o
     else:
         return l
 
 
 def del_dublicate_linked_list(l: LinkedList) -> None:
-    pass
+    # сортируем
+    l.sort()
+    r = []
+    # записываем значения повторяющихся
+    for i in range(1, len(l)):
+        if l[i] == l[i - 1]:
+            r.append(l[i])
+    # удоляем ячейки с этими значениями
+    for i in r:
+        l.remove_node(i)
+
 
 
 if __name__ == '__main__':
-    print(merge_sort(LinkedList([2,3,7,2,3])))
+    l = LinkedList([2,2,7,4,4])
+    del_dublicate_linked_list(l)
+
 
 
