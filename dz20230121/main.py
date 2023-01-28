@@ -4,8 +4,8 @@ def main():
     roads = pd.read_csv("roads.csv", encoding="cp1251", sep=";")
     roads = roads["Наименование автомобильных дорог"].str.strip().str.replace("\xa0" , " ").str.replace(" к ", " - ").str.replace("г. ", "", regex=True)\
     .str.replace(".* от", "", regex=True).str.replace('".*"', '', regex=True).str.strip().str.split(" - ").tolist()
-    adjience_matrix(roads, "matrix.csv")
-    #list_ribbles(roads, "ribbles.csv")
+    #adjience_matrix(roads, "matrix.csv")
+    list_ribbles(roads, "ribbles.txt")
     #adjience_list(roads, "list.txt")
 
 def list_ribbles(roads, path):
@@ -15,8 +15,8 @@ def list_ribbles(roads, path):
             a = (i[j], i[j + 1])
             if a not in ribbles and reversed(a) not in ribbles:
                 ribbles.append(a)
-    data = pd.DataFrame(ribbles)
-    data.to_csv(path)
+    with open(path, "w") as f:
+        f.write(str(ribbles))
 
 def adjience_list(roads, path):
     adjacency = {}
