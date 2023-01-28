@@ -1,7 +1,6 @@
 from typing import Dict, List
 from collections import deque
 
-import sys
 
 
 def bo(al: Dict[str, List[str]], s: deque, fin: str, alreafyposidely: []):
@@ -20,7 +19,6 @@ def bo(al: Dict[str, List[str]], s: deque, fin: str, alreafyposidely: []):
                 alreafyposidely.extend(a)
     return alreafyposidely
 
-# ПОМЕНЯТЬ ДА ИЗМЕНИТЬ
 def dfs(al: Dict[str, List[str]], start: str, finish: str) -> List[str]:
     s = deque()
     s.append(start)
@@ -34,21 +32,38 @@ def dfs(al: Dict[str, List[str]], start: str, finish: str) -> List[str]:
 def bfs(al: Dict[str, List[str]], start: str, finish: str) -> List[str]:
     o = deque()
     o.append(start)
+    puti = {}
+    f = False
     while True:
         a = o.popleft()
-        if a == finish:
-            break
-        else:
-            for i in al[start]:
+        for i in al[a]:
+            if i not in puti.keys():
                 o.append(i)
+                puti.update({i : a})
+                if i == finish:
+                    f = True
+                    break
+        if(f):
+            break
+    o = [finish]
+
+    n = finish
+    while True:
+        n = puti[n]
+        o.append(n)
+        if n == start:
+            break
+    return list(reversed(o))
+
 
 
 def main(filename: str, from_city: str, to_city: str):
-    pass
+    with open(filename, "r") as f:
+        al = eval(f.readline())
+    print(dfs(al, from_city,to_city))
+    print(bfs(al, from_city,to_city))
 
 if __name__ == "__main__":
-    print(dfs({"a" : ["b", "c"], "b" : ["d"], "c" : ["d"]}, "a", "d"))
-    print(bfs({"a": ["b", "c"], "b": ["d"], "c": ["d"]}, "a", "d"))
     # python main.py adjacency_list.txt москва екатеринбург
-    filename, from_city, to_city = sys.argv[1], sys.argv[2], sys.argv[3]
-    main(filename, from_city, to_city)
+    #датасет фиговый екб нету
+    main("list.txt", "Москва", "Тула")
