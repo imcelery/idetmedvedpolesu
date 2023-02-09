@@ -1,8 +1,8 @@
-import networkx as nx
-import matplotlib.pyplot as plt
+
 import requests
 import math
 import numpy as np
+import mapnik
 
 def parse(site):
     text = requests.get(site).text
@@ -27,68 +27,79 @@ def parse(site):
         a += nf
     return towns
 
-
-
 def graf(file):
-    g = nx.Graph()
     chords = parse("https://time-in.ru/coordinates/russia")
 
-    with open(file, "r") as f:
+    with open(file, "r", encoding='utf-8') as f:
         ribbles = eval(f.readline())
+
     vert = []
-    ser_med = 70
-    r = 6378.1
-    zy = {-9: 1, -8: 0.92, -7: 0.863, -6: 0.82, -5: 0.78, -4: 0.76, -3: 0.75, -2: 0.73, -1: 0.72, 0: 1, 1: .72, 2:0.73, 3: 0.75, 4: 0.76, 5: 0.78, 6: 0.82, 7: 0.863, 8: 0.92, 9: 1}
-
-
+    chribbles = []
     for i in ribbles:
         if i[0] in chords.keys() and i[1] in chords.keys():
             if i[0] not in vert:
                 x, y = chords[i[0]]
-                ny = math.sin(math.radians(90 - y)) * math.sin(math.radians(x - ser_med)) * r * zy[round((x - ser_med)/10)]
-                nz = math.cos(math.radians(90 - y)) * r  - math.cos(math.radians(x - ser_med))* r / 6
-                g.add_node(i[0], pos=(ny, nz))
+                vert.append((x, y))
 
             if i[1] not in vert:
                 x, y = chords[i[1]]
-                ny = math.sin(math.radians(90 - y)) * math.sin(math.radians(x - ser_med)) * r * zy[round((x - ser_med)/10)]
-                nz = math.cos(math.radians(90 - y)) * r - math.cos(math.radians(x - ser_med))* r / 6
-                g.add_node(i[1], pos=(ny, nz))
-            g.add_edge(i[0], i[1])
-
-        else:
-            ribbles.remove(i)
-
-    x, y = (70, 40)
-    ny = math.sin(math.radians(90 - y)) * math.sin(math.radians(x - ser_med)) * r
-    nz = math.cos(math.radians(90 - y)) * r - math.cos(math.radians(x - ser_med))* r / 6
-    g.add_node("a", pos=(ny, nz))
-    #
-    # x, y = (80, 50)
-    # ny = math.sin(math.radians(90 - y)) * math.sin(math.radians(x - ser_med)) * r
-    # nz = math.cos(math.radians(90 - y)) * r
-    # g.add_node("d", pos=(ny, nz))
-    #
-    # x, y = (140, 40)
-    # ny = math.sin(math.radians(90 - y)) * math.sin(math.radians(x - ser_med)) * r
-    # nz = math.cos(math.radians(90 - y)) * r
-    # g.add_node("b", pos=(ny, nz))
-    #
-    # x, y = (30, 60)
-    # ny = math.sin(math.radians(90 - y)) * math.sin(math.radians(x - ser_med)) * r
-    # nz = math.cos(math.radians(90 - y)) * r
-    # g.add_node("c", pos=(ny, nz))
+                vert.append((x, y))
+            chribbles.append((chords[i[0]], chords[i[1]]))
 
 
-
-    img = plt.imread("map.jpg")
-    fig, ax = plt.subplots()
-
-    m = 0
-    ax.imshow(img, extent=[-r + m, r - m, 0,r])
-    nx.draw_networkx(g, nx.get_node_attributes(g, 'pos'), with_labels=False, node_size=100)
-    plt.show()
-
+    return vert, chribbles
 
 if __name__ == "__main__":
-    graf("ribbles.txt")
+    m = mapnik.Map(1800, 700)
+    m.background = mapnik.Color('steelblue')
+
+
+    polygons = mapnik.PolygonSymbolizer()
+    polygons.fill = mapnik.Color('lightgreen')
+
+    rules = mapnik.Rule()
+    rules.symbols.append(polygons)
+
+    style = mapnik.Style()
+    style.rules.append(rules)
+    m.append_style('Russia', style)
+
+    layer = mapnik.Layer('world')
+    layer.datasource = mapnik.Shapefile(file="data/RUS_adm0.shp")
+    layer.styles.append('Russia')
+    m.layers.append(layer)
+
+    s = mapnik.Style()  # style object to hold rules
+    r = mapnik.Rule()  # rule object to hold symbolizers
+    point_sym = mapnik.PointSymbolizer()
+    r.symbols.append(point_sym)  # add the symbolizer to the rule object
+
+    l = mapnik.LineSymbolizer()
+    r.symbols.append( l)  # add the symbolizer to the rule object
+    s.rules.append(r)
+    m.append_style('towns', s)
+
+    ds = mapnik.MemoryDatasource()
+    ctx = mapnik.Context()
+    vert, chriddles = graf("r.txt")
+
+    for i in vert:
+        geom = mapnik.Geometry.from_wkt(f"POINT({i[0]} {i[1]})")
+        f = mapnik.Feature(ctx, 1)
+        f.geometry = geom
+        ds.add_feature(f)
+
+    for i in chriddles:
+        geom = mapnik.Geometry.from_wkt(f"LINESTRING({i[0][0]} {i[0][1]}, {i[1][0]} {i[1][1]})")
+        f = mapnik.Feature(ctx, 1)
+        f.geometry = geom
+        ds.add_feature(f)
+
+    layer = mapnik.Layer('memory')
+    layer.datasource = ds
+    layer.styles.append('towns')
+
+    m.layers.append(layer)
+
+    m.zoom_to_box(mapnik.Box2d(180, 30, 20, 85.0))
+    mapnik.render_to_file(m, 'world.png', 'png')
