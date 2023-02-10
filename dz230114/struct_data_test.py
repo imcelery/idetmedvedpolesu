@@ -22,7 +22,7 @@ class TestDoubleLinkedList(TestCase):
         self.assertEqual(self._linkedList.show(), "1 2 4 3")
 
     def test_get(self):
-        self.assertEqual(self._linkedList.get(1), 2)
+        self.assertEqual(self._linkedList.get(2), 3)
 
 
 class TestStack(TestCase):

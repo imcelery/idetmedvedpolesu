@@ -144,7 +144,7 @@ class DoubleLinkedList:
                 return s.strip()
 
     def get(self, index):
-        return self.memory_obj[self.search(index).link_value]
+        return self.memory_obj[self.memory_addr[self.search(index)].link_value]
 
     def getin(self, index):
         return self.memory_obj[self.memory_addr[index].link_value]
