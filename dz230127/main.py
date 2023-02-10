@@ -18,11 +18,15 @@ def bo(al: Dict[str, List[str]], s: deque, fin: str, alreafyposidely: []):
             else:
                 alreafyposidely.extend(a)
     return alreafyposidely
+    #возращаем очередь если нашли путь а если нет возращем список пройденных вершин
+
 
 def dfs(al: Dict[str, List[str]], start: str, finish: str) -> List[str]:
     s = deque()
     s.append(start)
+    #вызываем рекурсию
     a = bo(al, s, finish, [start])
+    #если вернулась очередь то ответ есть
     if type(a) == deque:
         return list(a)
     else:
@@ -30,30 +34,42 @@ def dfs(al: Dict[str, List[str]], start: str, finish: str) -> List[str]:
 
 
 def bfs(al: Dict[str, List[str]], start: str, finish: str) -> List[str]:
+
+
     o = deque()
     o.append(start)
+    #ловарь путей ко всем пройденным вершинам чтобы восстановить обратный путь
     puti = {}
+    #чтобы знать когда из цикла выходить
     f = False
-    while True:
+
+    while len(o) != 0:
         a = o.popleft()
         for i in al[a]:
             if i not in puti.keys():
                 o.append(i)
                 puti.update({i : a})
                 if i == finish:
+                    #готча
                     f = True
                     break
+
+
         if(f):
             break
-    o = [finish]
+    #если нашли
+    if f:
+        o = [finish]
 
-    n = finish
-    while True:
-        n = puti[n]
-        o.append(n)
-        if n == start:
-            break
-    return list(reversed(o))
+        n = finish
+        while True:
+            n = puti[n]
+            o.append(n)
+            if n == start:
+                break
+        return list(reversed(o))
+    else:
+        return 'нет такого'
 
 
 
