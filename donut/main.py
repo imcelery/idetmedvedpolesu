@@ -84,7 +84,7 @@ class Grafic:
 
 class GameObject:
     def __init__(self):
-        self._position = [0, -300, -3000]
+        self._position = [0, -300, -300]
         self._rotation = [[0], [0], [0], [1]]
         self._model = Model()
 
@@ -94,7 +94,7 @@ class GameObject:
     def show(self, grafic, cameraDirection, cameraPosition, width, height):
         m = RotationX(-90)
 
-        m = mul_matrix(Scale(10, 10, 10), m)
+        m = mul_matrix(Scale(100, 100, 100), m)
 
         m = mul_matrix(Translation(*self._position), m)
 
@@ -113,7 +113,7 @@ if __name__ == "__main__":
 
     angel = 0
 
-    your_mesh = mesh.Mesh.from_file('pikachu_1gen_flowalistik.stl')
+    your_mesh = mesh.Mesh.from_file('arrow.stl')
 
     gm = GameObject()
     gm.set_model(your_mesh.vectors)
@@ -157,7 +157,7 @@ if __name__ == "__main__":
         elif keys[pygame.K_e]:
 
             donut.cameraDirection = normalize(mul_matrix(RotationY(-1), donut.cameraDirection))
-        print(donut.cameraDirection)
+
 
 
         donut.drowObjects()

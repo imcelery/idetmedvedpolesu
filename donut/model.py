@@ -44,7 +44,7 @@ class Model:
             
             res = scalarProduct(normal, cameraDirection)
 
-            if res > 0 or True:
+            if res < 0:
                 grafic.drawLine(
                     v1[0][0],
                     v1[1][0],
