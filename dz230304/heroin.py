@@ -1,0 +1,213 @@
+import random
+import pygame
+import logging
+
+W, H = 800, 600  # ширина и высота окна
+FPS = 20  # количество обработок в секунду (кадров)
+count_rock = 10 # количество камней
+snake_block = 10  # ширина змеи
+
+
+# цвета в rgb
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+GRAY = (120, 120, 120)
+
+
+def message(msg, color) -> None:
+    """
+    Вывод текста в центр экрана заданным цветом
+    :param msg: текст
+    :param color: цвет в rgb
+    :return: None
+    """
+    msg = font_style.render(msg, True, color)  # преобразуем текст в изображение текста
+    screen.blit(msg, (W//2 - msg.get_width()//2, H//2 - msg.get_height()//2))  # отображаем изображение на экране
+
+
+def message_count_eat(msg) -> None:
+    """
+    Вывод текста в верхний левый угол экрана зеленым цветом
+    :param msg: текст
+    :return: None
+    """
+    msg = font_style.render(msg, True, GREEN)  # преобразуем текст в изображение текста
+    screen.blit(msg, (0, 0))  # отображаем изображение на экране
+
+
+def draw_snake(pos):
+    pygame.draw.rect(screen, RED, (pos.x, pos.y, snake_block, snake_block))
+
+
+def draw_eaten(eaten):
+    for el in eaten:
+        pygame.draw.rect(screen, (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)), (el.x, el.y, snake_block, snake_block))
+
+
+class Point:
+    def __init__(self,  x, y):
+        self.x = x
+        self.y = y
+
+    def __add__(self, other):
+        return Point(self.x + other.x, self.y + other.y)
+
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
+
+    def __neg__(self):
+        return Point(-self.x, -self.y)
+
+
+
+class Game:
+    def __init__(self):
+        self.game_over = False  # проиграли или нет
+        # начальные положение головы змеи
+        self.head = Point(W // 2, H // 2)
+        # начальные сдвиг змеи
+        self.head_change = Point(0, 0)
+        # предыдущий сдвиг змеи
+        self.head_change_old = Point(0, 0)
+        # генерируем начальное положение еды
+
+        self.length_snake = 1
+
+        self.eaten = []
+
+    def get_random_coordinate(self, max_l):
+        return round(random.randrange(0, max_l - snake_block) / snake_block) * snake_block
+
+    def get_random_place(self, max_w=W, max_h=H):
+        return Point(self.get_random_coordinate(max_w), self.get_random_coordinate(max_h))
+
+    def snake_eat(self):
+        # если мы еще в игре
+        # и если голова змеи оказалась в той же клетке, что еда
+        if not self.game_over and self.head not in self.eaten:
+            self.length_snake += 1
+            self.eaten.append(self.head)
+
+    def snake_left_field(self):
+        # если змея вышла за границы поля
+        if self.head.x >= W or self.head.x < 0 or self.head.y >= H or self.head.y < 0:
+            # то игра заканчивается
+            self.game_over = True
+
+    # def snake_hit_rock(self):
+    #     # если змея столкнулась со скалами
+    #     if self.head in self.rock_list:
+    #         self.game_over = True
+
+    def snake_step(self):
+        # вычислили куда надо сместиться теперь смещаем
+        # и запоминаем где должна быть голова змеи
+        # обратите внимание, что если пользователь ничего не нажимает
+        # то значение смещений остается и змея продолжает двигаться
+        # в сторону последнего заданного направления
+        if not self.game_over:
+            if self.length_snake > 1:
+                if self.head_change == -self.head_change_old:
+                    self.head_change = self.head_change_old
+
+            self.head += self.head_change
+
+    def snake_left(self):
+        self.head_change = Point(-snake_block, 0)
+
+    def snake_right(self):
+        self.head_change = Point(snake_block, 0)
+
+    def snake_up(self):
+        self.head_change = Point(0, -snake_block)
+
+    def snake_down(self):
+        self.head_change = Point(0, snake_block)
+
+    def last_do(self):
+        self.head_change_old = self.head_change
+
+
+
+if __name__ == "__main__":
+    pygame.init()  # инициализируем модуль pygame
+
+    screen = pygame.display.set_mode((W, H))  # получаем объект cодержимого окна с ширной W и высотой H
+    pygame.display.set_caption("Игра Змейка")  # устанавливаем у окна заголовок
+    clock = pygame.time.Clock()  # получаем объект "часы"
+    font_style = pygame.font.SysFont(None, 50)  # получаем объект стиль-текста
+
+    running = True  # истина пока продолжается игра
+    game = Game()
+
+    while running:  # основной цикл игры
+        # получаем все события, зарегистрированные в игре
+        for event in pygame.event.get():
+            # если пользователь нажал крестик на окне
+            if event.type == pygame.QUIT:
+                # прерываем основной цикл (чтобы закрыть потом приложение)
+                running = False
+            # если регистрируем событие нажатой клавиши
+            elif event.type == pygame.KEYDOWN:
+                # если игра закончена и нажали c перезапускаем игру
+                if game.game_over and event.key == pygame.K_c:
+                    game = Game()
+                # если нажата клавиша стрелочка влево
+                elif event.key == pygame.K_LEFT:
+                    # обновляем значения на сколько и куда надо сместить голову змеи
+                    game.snake_left()
+                elif event.key == pygame.K_RIGHT:
+                    game.snake_right()
+                elif event.key == pygame.K_UP:
+                    game.snake_up()
+                elif event.key == pygame.K_DOWN:
+                    game.snake_down()
+
+        # логика действий перед отрисовкой ------
+        # шагаем змеей
+        game.snake_step()
+        # змея столкнулась сама с собой?
+
+        # змея вышла за границы поля?
+        game.snake_left_field()
+        # если змея столкнулась со скалами
+
+        # ---------------------------------------
+
+        # начало рисования --------------------------------
+        # заполняем область окна белым цветом
+        screen.fill(WHITE)
+
+        # рисуем змею в текущих координатах ее частей
+        draw_snake(game.head)
+
+        draw_eaten(game.eaten)
+
+        # если игра закончилась
+        if game.game_over:
+            # рисуем в цетре экрана - вы проиграли
+            message("Вы проиграли", GREEN)
+
+        # выводим сколько съели
+        message_count_eat(f"Съели: {game.length_snake - 1}")
+        # конец рисования ---------------------------------------
+
+        # отображаем на экране то, что нарисовали
+        pygame.display.update()
+
+        # логика действий после отрисовки (подготовка к следующей итерации цикла) ------------
+        # пробуем змеей съесть еду (если вдруг на ней находимся)
+        game.snake_eat()
+        game.last_do()
+        # ------------------------------------------------------------------------------------
+
+        # если выполнили все слишком быстро ждем пока закончится время одного тика
+        clock.tick(FPS)
+
+    # если вышли из основного цикла
+    # закрываем pygame
+    pygame.quit()
+    # закрываем python программу
+    quit()
