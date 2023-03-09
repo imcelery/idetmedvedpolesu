@@ -2,13 +2,14 @@
 import random
 import pygame
 import logging
+from network import *
 
 logging.basicConfig(level=logging.INFO, filename="snake.log",filemode="w",
                     format="%(asctime)s %(filename)s %(levelname)s %(funcName)s %(lineno)d %(message)s")
 
 
 W, H = 800, 600  # ширина и высота окна
-FPS = 20  # количество обработок в секунду (кадров)
+FPS = 200 # количество обработок в секунду (кадров)
 count_rock = 10 # количество камней
 snake_block = 10  # ширина змеи
 
@@ -83,15 +84,15 @@ class Point:
         return Point(-self.x, -self.y)
 
     def __repr__(self):
-        return f"({self.x},{self.y})"
+        return f"{self.x},{self.y}"
 
     def __hash__(self):
-        return self.x + self.y * 20
+        return self.x + self.y * 1000
 
 
 class Game:
     def __init__(self):
-        self.power = 10000
+        self.power = 1000
         self.game_over = False  # проиграли или нет
         # начальные положение головы змеи
         self.head = Point(W // 2, H // 2)
@@ -99,12 +100,12 @@ class Game:
         self.head_change = Point(0, 0)
         # предыдущий сдвиг змеи
         self.head_change_old = Point(0, 0)
-        # генерируем начальное положение еды
-        self.new_food()
-        # список камней
-        self.rock_list = self.generate_rock()
         # список частей змейки
         self.snake_list = []
+        # список камней
+        self.rock_list = self.generate_rock()
+        # генерируем начальное положение еды
+        self.new_food()
         # какой длинны должна быть змейка
         self.length_snake = 1
 
@@ -121,10 +122,20 @@ class Game:
         a = []
         for i in range(count_rock):
             a.append(self.get_random_place())
+
+        for i in range(W//snake_block):
+            a.append(Point(i*snake_block, -snake_block))
+            a.append(Point(i * snake_block, H))
+
+        for i in range(H//snake_block):
+            a.append(Point(-snake_block, i*snake_block))
+            a.append(Point(W, i * snake_block))
         return a
 
     def new_food(self):
         self.food = self.get_random_place()
+        if self.food in self.rock_list or self.food in self.snake_list:
+            self.new_food()
 
     def snake_eat(self):
         # если мы еще в игре
@@ -195,29 +206,62 @@ class Game:
     def last_do(self):
         self.head_change_old = self.head_change
 
-def do(game):
-    d = [[1, 0],[-1, 0],[0, 1], [0, -1]]
-    nd = []
-    for i in d:
-        n = game.head + Point(*i)
-        if n not in game.rock_list and n not in game.snake_list and not(n.x >= W or n.x < 0 or n.y >= H or n.y < 0):
-            nd.append(i)
-    if nd == []:
-        print("blyt")
-        game.snake_left()
-    else:
-        nx = game.food.x - game.head.x
-        ny = game.food.y - game.head.y
-        print(nx, ny)
-        a = []
-        for i in range(len(nd)):
-            a.append(abs(abs(nx - nd[i][0]) + abs(ny - nd[i][1])))
+def do(game, nn):
+    m = [0.01, ] * 81
+    for i in game.rock_list:
+        nx = (i.x - game.head.x) // snake_block + 4
+        ny = (i.y - game.head.y) // snake_block + 4
 
-        d = {Point(*[1, 0]): game.snake_left, Point(*[-1, 0]) : game.snake_right, Point(*[0, 1]) : game.snake_up, Point(*[0, -1]) : game.snake_down}
+        if nx >= 0 and nx < 9 and ny >= 0 and ny < 9:
+            m[nx + ny * 9] = -0.99
 
-        d[Point(*nd[a.index(min(a))])]()
+    nx = (game.food.x - game.head.x) // snake_block + 4
+    ny = (game.food.y - game.head.y) // snake_block + 4
 
+    if nx < 0:
+        nx = 0
+    if nx >= 9:
+        nx = 8
+    if ny < 0:
+        ny = 0
+    if ny >= 9:
+        ny = 8
+    m[nx + ny * 9] = 0.99
 
+    print(m)
+
+    d = [game.snake_right, game.snake_left, game.snake_down, game.snake_up, ]
+
+    a = nn.feedforward(m)
+    index = a.index(max(a))
+    d[index]()
+
+    # d = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+    # nd = []
+    # for i in d:
+    #     n = game.head + Point(i[0] * snake_block, i[1] * snake_block)
+    #     if n in game.rock_list or n in game.snake_list or n.x >= W or n.x < 0 or n.y >= H or n.y < 0:
+    #         continue
+    #     nd.append(i)
+    # print(nd)
+    # if nd == []:
+    #     r = 0
+    # else:
+    #     nx = game.food.x - game.head.x
+    #     ny = game.food.y - game.head.y
+    #     a = []
+    #     for i in range(len(nd)):
+    #         a.append((nx - nd[i][0])**2 + (ny - nd[i][1])**2)
+    #     indices = []
+    #     for idx, value in enumerate(a):
+    #         if value == min(a):
+    #             indices.append(idx)
+    #     print(nd[indices[random.randint(0, len(indices) - 1)]])
+    #     r = d.index(nd[indices[random.randint(0, len(indices) - 1)]])
+    #     print(r)
+    # d = [game.snake_right, game.snake_left, game.snake_down, game.snake_up, ]
+    # d[r]()
+    #     слишком просто
 
 
 if __name__ == "__main__":
@@ -231,6 +275,8 @@ if __name__ == "__main__":
 
     running = True  # истина пока продолжается игра
     game = Game()
+    nn = NeuralNetwork(0.1, [81, 12, 4])
+    nn.load("file.txt")
 
     while running:  # основной цикл игры
         # получаем все события, зарегистрированные в игре
@@ -244,7 +290,8 @@ if __name__ == "__main__":
                 # если игра закончена и нажали c перезапускаем игру
                 if game.game_over and event.key == pygame.K_c:
                     game = Game()
-        do(game)
+        if not game.game_over:
+            do(game, nn)
                 # # если нажата клавиша стрелочка влево
                 # elif event.key == pygame.K_LEFT:
                 #     # обновляем значения на сколько и куда надо сместить голову змеи
@@ -261,7 +308,7 @@ if __name__ == "__main__":
         game.snake_step()
         game.power -= 1
         if game.power <= 0:
-            running = False
+            game.game_over = True
         # змея столкнулась сама с собой?
         game.snake_hit_itself()
         # змея вышла за границы поля?
