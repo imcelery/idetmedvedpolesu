@@ -1,5 +1,4 @@
 import random
-import pygame
 import logging
 from network import *
 
@@ -7,18 +6,18 @@ logging.basicConfig(level=logging.INFO, filename="snake.log",filemode="w",
                     format="%(asctime)s %(filename)s %(levelname)s %(funcName)s %(lineno)d %(message)s")
 
 
-W, H = 400, 400  # ширина и высота окна
+W, H = 600, 800  # ширина и высота окна
 FPS = 200 # количество обработок в секунду (кадров)
 count_rock = 10 # количество камней
 snake_block = 10  # ширина змеи
 
 
 # цвета в rgb
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-GRAY = (120, 120, 120)
+# BLACK = (0, 0, 0)
+# WHITE = (255, 255, 255)
+# RED = (255, 0, 0)
+# GREEN = (0, 255, 0)
+# GRAY = (120, 120, 120)
 
 
 # def message(msg, color) -> None:
@@ -296,9 +295,9 @@ if __name__ == "__main__":
     game = Game()
     nn = NeuralNetwork(0.3, [81, 4, 4])
 
-    nn.load("file.txt")
+    #nn.load("file.txt")
     deaths = 0
-    maxdeath = 10000
+    maxdeath = 100
     while running:  # основной цикл игры
 
         # получаем все события, зарегистрированные в игре

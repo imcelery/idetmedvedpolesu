@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.INFO, filename="snake.log",filemode="w",
 
 W, H = 800, 600  # ширина и высота окна
 FPS = 200 # количество обработок в секунду (кадров)
-count_rock = 10 # количество камней
+count_rock = 100 # количество камней
 snake_block = 10  # ширина змеи
 
 
@@ -207,60 +207,59 @@ class Game:
         self.head_change_old = self.head_change
 
 def do(game, nn):
-    m = [0.01, ] * 81
-    for i in game.rock_list:
-        nx = (i.x - game.head.x) // snake_block + 4
-        ny = (i.y - game.head.y) // snake_block + 4
+    # m = [0.01, ] * 81
+    # for i in game.rock_list:
+    #     nx = (i.x - game.head.x) // snake_block + 4
+    #     ny = (i.y - game.head.y) // snake_block + 4
+    #
+    #     if nx >= 0 and nx < 9 and ny >= 0 and ny < 9:
+    #         m[nx + ny * 9] = -0.99
+    #
+    # nx = (game.food.x - game.head.x) // snake_block + 4
+    # ny = (game.food.y - game.head.y) // snake_block + 4
+    #
+    # if nx < 0:
+    #     nx = 0
+    # if nx >= 9:
+    #     nx = 8
+    # if ny < 0:
+    #     ny = 0
+    # if ny >= 9:
+    #     ny = 8
+    # m[nx + ny * 9] = 0.99
+    #
+    # d = [game.snake_right, game.snake_left, game.snake_down, game.snake_up, ]
+    #
+    # a = nn.feedforward(m)
+    # index = a.index(max(a))
+    # d[index]()
 
-        if nx >= 0 and nx < 9 and ny >= 0 and ny < 9:
-            m[nx + ny * 9] = -0.99
+    #слишком сложно
+    d = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+    nd = []
+    for i in d:
+        n = game.head + Point(i[0] * snake_block, i[1] * snake_block)
+        if n in game.rock_list or n in game.snake_list or n.x >= W or n.x < 0 or n.y >= H or n.y < 0:
+            continue
+        nd.append(i)
 
-    nx = (game.food.x - game.head.x) // snake_block + 4
-    ny = (game.food.y - game.head.y) // snake_block + 4
+    if nd == []:
+        r = 0
+    else:
+        nx = game.food.x - game.head.x
+        ny = game.food.y - game.head.y
+        a = []
+        for i in range(len(nd)):
+            a.append((nx - nd[i][0])**2 + (ny - nd[i][1])**2)
+        indices = []
+        for idx, value in enumerate(a):
+            if value == min(a):
+                indices.append(idx)
 
-    if nx < 0:
-        nx = 0
-    if nx >= 9:
-        nx = 8
-    if ny < 0:
-        ny = 0
-    if ny >= 9:
-        ny = 8
-    m[nx + ny * 9] = 0.99
-
-    print(m)
+        r = d.index(nd[indices[random.randint(0, len(indices) - 1)]])
 
     d = [game.snake_right, game.snake_left, game.snake_down, game.snake_up, ]
-
-    a = nn.feedforward(m)
-    index = a.index(max(a))
-    d[index]()
-
-    # d = [[1, 0], [-1, 0], [0, 1], [0, -1]]
-    # nd = []
-    # for i in d:
-    #     n = game.head + Point(i[0] * snake_block, i[1] * snake_block)
-    #     if n in game.rock_list or n in game.snake_list or n.x >= W or n.x < 0 or n.y >= H or n.y < 0:
-    #         continue
-    #     nd.append(i)
-    # print(nd)
-    # if nd == []:
-    #     r = 0
-    # else:
-    #     nx = game.food.x - game.head.x
-    #     ny = game.food.y - game.head.y
-    #     a = []
-    #     for i in range(len(nd)):
-    #         a.append((nx - nd[i][0])**2 + (ny - nd[i][1])**2)
-    #     indices = []
-    #     for idx, value in enumerate(a):
-    #         if value == min(a):
-    #             indices.append(idx)
-    #     print(nd[indices[random.randint(0, len(indices) - 1)]])
-    #     r = d.index(nd[indices[random.randint(0, len(indices) - 1)]])
-    #     print(r)
-    # d = [game.snake_right, game.snake_left, game.snake_down, game.snake_up, ]
-    # d[r]()
+    d[r]()
     #     слишком просто
 
 
