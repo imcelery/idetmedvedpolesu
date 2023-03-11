@@ -11,13 +11,13 @@ timetodiecheb = 50
 
 shuneat = 3
 
-chebeat = 1
+chebeat = 3
 
 
 W = 800
 H = 800
 
-FPS = 20
+FPS = 666
 block = 10  # ширина змеи
 
 # цвета в rgb

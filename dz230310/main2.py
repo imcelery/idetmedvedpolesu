@@ -176,12 +176,12 @@ if __name__ == '__main__':
 
     plt.plot(data)
 
-    maxn = 3300
+    maxn = 3400
 
     data2 = []
-    n = 1
+    n = 20
 
-    k = 0.1
+    k = 0.05
     for i in range(len(data)):
         data2.append(n)
         n = n * (1 + k * (maxn - n)/maxn)
