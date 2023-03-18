@@ -7,7 +7,7 @@ import pygame
 W = 800
 H = 800
 
-FPS = 20
+FPS = 200
 block = 10  # ширина змеи
 
 # цвета в rgb
@@ -17,15 +17,20 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 GRAY = (120, 120, 120)
 
-k = 6000
+k = 1000
 
 r = 2
+
+u = 20
 
 
 
 class Shushun:
     def __init__(self,dir = None):
         self.rab = False
+        self.ismoved = False
+        self.cassa = [0, 0]
+        self.isupd = False
         if dir == None:
             self.newdirect()
         else:
@@ -37,26 +42,34 @@ class Shushun:
         self.direct = d[random.randint(0, len(d)-1)]
 
 
-    def upd(self):
-        c = random.randint(0, 10)
-        if c >= 9:
-            self.newdirect()
+    def upd(self, p):
+        if self.rab:
+            y = self.cassa[0] - p[0]
+            x = self.cassa[1] - p[1]
+            if y == 0:
+                my = 0
+            else: my = y//abs(y)
+            if x == 0:
+                mx = 0
+            else: mx =x//abs(x)
+            self.direct = [my,mx]
+        elif not self.isupd:
+            self.isupd = True
+            c = random.randint(0, 10)
+            if c >= 9:
+                self.newdirect()
         return self.direct
-
-# class Cassa:
-#     def __init__(self):
-#         self.r = r
 
 class Point:
     def __init__(self):
-        self.ismoved = False
+        self.isupd = False
         self.shush = None
-        self.newshush = None
+        self.cassa = None
 
 
-    def move(self):
+    def upd(self, p):
         if self.shush is not None:
-            return self.shush.upd()
+            return self.shush.upd(p)
         else:
             return None
 
@@ -64,11 +77,18 @@ class Point:
 
 def upd_map(map):
     q = []
-
-    p = [random.randint(0, H//block - 1), random.randint(0, W//block - 1)]
-
-    while map[p[0]][p[1]].shush is not None:
-        p = [random.randint(0, H // block - 1), random.randint(0, W // block - 1)]
+    p = [0, 0]
+    for i in range(len(map)):
+        for j in range(len(map[0])):
+            if map[i][j].cassa is True:
+                for k in range(2 * r + 1):
+                    for e in range(2 * r + 1):
+                        d = map[(i - r + k)%(H//block)][(j - r + e)%(W//block)]
+                        if d.shush is not None:
+                            d.shush.rab = True
+                            d.shush.cassa = [i, j]
+            if map[i][j].shush is not None:
+                p = [i,j]
 
     q.append(p)
 
@@ -76,10 +96,11 @@ def upd_map(map):
 
         p = q[0]
         nq = []
-        nq.append([(p[0] - 1) % (H//block), p[1]])
-        nq.append([(p[0] + 1) % (H//block), p[1]])
-        nq.append([p[0], (p[1] - 1) % (W//block)])
-        nq.append([p[0], (p[1] + 1) % (W//block)])
+        f = [[-1, -1], [-1, 0], [-1, 1],
+             [0, -1],          [0, 1],
+             [1, -1], [1, 0], [1, 1],]
+        for i in f:
+            nq.append([(p[0] + i[0]) % (H//block),(p[1] + i[1]) % (W//block)])
 
         b = map[p[0]][p[1]].shush is None
 
@@ -87,19 +108,22 @@ def upd_map(map):
         for i in nq:
             k = map[i[0]][i[1]]
 
-            if k.ismoved == False:
-                d = k.move()
-                if d is not None:
+
+            d = k.upd([i[0], i[1]])
+            if d is not None:
+                if not k.shush.ismoved:
                     if [(d[0] + i[0]) % (H//block), (d[1] + i[1])% (W//block)] == p:
                         if b:
                             b = False
                             map[p[0]][p[1]].shush = k.shush
                             k.shush = None
+                            map[p[0]][p[1]].shush.ismoved = True
 
+            if k.isupd == False:
                 nnq.append(i)
 
 
-        map[p[0]][p[1]].ismoved = True
+        map[p[0]][p[1]].isupd = True
         for i in nnq:
             if i not in q:
                 q.append(i)
@@ -112,9 +136,13 @@ def draw_map(map):
     for i in range(len(map)):
         for j in range(len(map[0])):
             p = map[i][j]
-            p.ismoved = False
+            p.isupd = False
             if p.shush is not None:
                 pygame.draw.rect(screen, RED, (j * block, i * block, block, block))
+                p.shush.ismoved = False
+                p.shush.isupd = False
+            if p.cassa:
+                pygame.draw.rect(screen, GRAY, (j * block, i * block, block, block))
 
 if __name__ == '__main__':
     pygame.init()  # инициализируем модуль pygame
@@ -132,9 +160,19 @@ if __name__ == '__main__':
             a.append(Point())
         map.append(a)
 
+    i = u
+    while i > 0:
+        d = map[random.randint(0, H // block - 1)][random.randint(0, W // block - 1)]
+        if d.cassa is None:
+            d.cassa = True
+            i -= 1
 
-    for i in range(k):
-        map[random.randint(0, H//block - 1)][random.randint(0, W//block - 1)].shush = Shushun()
+    i = k
+    while i > 0:
+        d = map[random.randint(0, H//block - 1)][random.randint(0, W//block - 1)]
+        if d.shush is None and not d.cassa:
+            d.shush = Shushun()
+            i -= 1
 
 
     while running:  # основной цикл игры
@@ -157,6 +195,7 @@ if __name__ == '__main__':
 
         # отображаем на экране то, что нарисовали
         pygame.display.update()
+        print(clock.get_fps())
         clock.tick(FPS)
 
 
