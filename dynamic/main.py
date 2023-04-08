@@ -1,6 +1,6 @@
 import pygame as pg
 
-fps = 30
+fps = 2
 black = (0, 0, 0)
 white = (255, 255, 255)
 pg.init()
@@ -19,7 +19,7 @@ l = 2
 
 a = [0 for _ in range(n)]
 
-a[5] = 3
+a[5] = 5
 
 k = 0.5
 clock = pg.time.Clock()
@@ -31,10 +31,13 @@ while True:
     for i in range(len(a)):
         pg.draw.rect(screen, white, (l + i * (l + n), HEIGHT//2 + a[i], blok, blok))
 
+    for i in range(len(a)):
+        pg.draw.rect(screen, white, (l + i * (l + n), HEIGHT//2 + a[i], blok, blok))
+
     na = a.copy()
 
     for i in range(1, len(a)):
-        na[i - 1] += (a[i - 1] - a[i]) * k
+        na[i - 1] += (a[i] - a[i - 1]) * k
 
     a = na
 
