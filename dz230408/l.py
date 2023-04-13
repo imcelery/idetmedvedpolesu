@@ -22,12 +22,24 @@ def f(n, m, b):
     j = m - 1
     s = ""
     for _ in range(i * j):
-        if a[i - 1][j] < a[i][j - 1]:
+        if i == 0 and j == 0:
+            break
+        elif i == 0:
+            j -= 1
+            s = "R" + s
+        elif j == 0:
             i -= 1
             s = "D" + s
+
+
+        elif a[i - 1][j] > a[i][j - 1]:
+            i -= 1
+            s = "D" + s
+
         else:
             j -= 1
             s = "R" + s
+
     return a[n - 1][m - 1], s
 
 if __name__ == "__main__":

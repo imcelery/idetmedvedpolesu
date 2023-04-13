@@ -1,6 +1,6 @@
 import pygame as pg
 
-fps = 2
+fps = 10
 black = (0, 0, 0)
 white = (255, 255, 255)
 pg.init()
@@ -12,35 +12,56 @@ screen = pg.display.set_mode((WIDTH, HEIGHT))
 pg.display.set_caption("My Game")
 
 blok = 10
-
-n = 10
-
 l = 2
 
-a = [0 for _ in range(n)]
+n = 30
 
-a[5] = 5
+k = 0.7
 
-k = 0.5
 clock = pg.time.Clock()
 
+class Point:
+    def __init__(self):
+        self.vec = 0
+        self.k = k
+        self.h = 0
+
+    def update(self, prevP, nextP):
+        if prevP is not None:
+            self.vec += (prevP.h - self.h) * self.k
+
+        if nextP is not None:
+            self.vec += (nextP.h - self.h) * self.k
+
+    def move(self):
+        self.h += self.vec
+
+a = [Point() for _ in range(n)]
+
+a[0].h = 50
+a[29].h = 50
 
 while True:
 
     screen.fill(black)
     for i in range(len(a)):
-        pg.draw.rect(screen, white, (l + i * (l + n), HEIGHT//2 + a[i], blok, blok))
+        pg.draw.rect(screen, white, (l + i * (l + blok), HEIGHT//2 + a[i].h, blok, blok))
+
 
     for i in range(len(a)):
-        pg.draw.rect(screen, white, (l + i * (l + n), HEIGHT//2 + a[i], blok, blok))
+        nextP = None
+        prevP = None
+        if i + 1 < len(a):
+            nextP = a[i + 1]
+        if i - 1 >= 0:
+            prevP = a[i - 1]
+        a[i].update(prevP, nextP)
 
-    na = a.copy()
+    for i in range(len(a)):
+        a[i].move()
 
-    for i in range(1, len(a)):
-        na[i - 1] += (a[i] - a[i - 1]) * k
-
-    a = na
 
     pg.display.flip()
 
     clock.tick(fps)
+
