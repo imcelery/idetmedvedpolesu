@@ -1,7 +1,7 @@
 import pygame as pg
 
 
-fps = 30
+fps = 10
 black = (0, 0, 0)
 white = (255, 255, 255)
 blue = (0, 0, 255)
@@ -46,7 +46,7 @@ class Point:
         self.h += self.vec
 
 a = [[Point("static") for _ in range(n + 2)]]
-a += [[Point("static")] + [Point("light") for _ in range(n//2)] +  [Point("havy") for _ in range(n//2)]+ [Point("static")] for i in range(n)]
+a += [[Point("static")] + [Point("light") for _ in range(n//2)]   + [Point("havy") for _ in range(n//2)]+ [Point("static")] for i in range(n)]
 
 a += [[Point("static") for _ in range(n + 2)]]
 
@@ -87,12 +87,15 @@ while True:
             near.append(a[i - 1][j - 1])
             a[i][j].update(near)
 
-
+    s = 0
+    vs = 0
     for i in range(len(a)):
         for j in range(1, n+ 2 - 1):
             a[i][j].move()
+            s += a[i][j].h
+            vs += a[i][j].vec
 
-    print(clock.get_fps())
+    print(s, vs)
 
 
     pg.display.flip()

@@ -5,15 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0d522a4f-2b2c-4bb2-a2a9-08671185f0a7" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/idetmedvedpolesu.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/idetmedvedpolesu.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dynamic/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/dynamic/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dz230408/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dz230408/.idea/dz230408.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dz230408/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dz230408/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dz230408/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dz230408/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dz230408/l.py" beforeDir="false" afterPath="$PROJECT_DIR$/dz230408/l.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dynamic/svet.py" beforeDir="false" afterPath="$PROJECT_DIR$/dynamic/svet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dz230414/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/dz230414/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,16 +35,55 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "D:/python/pythonProject"
-  }
-}]]></component>
-  <component name="RunManager" selected="Python.back">
-    <configuration name="back" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/dz230415/3.py" />
+  </component>
+  <component name="RunManager" selected="Python.mainrfsdasdas">
+    <configuration name="2" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="idetmedvedpolesu" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="Y:\idetmedvedpolesu\venv\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/dz230415" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/dz230415/2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="3" type="PythonConfigurationType" factoryName="Python">
+      <module name="idetmedvedpolesu" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="Y:\idetmedvedpolesu\venv\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/dz230415" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/dz230415/3.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="idetmedvedpolesu" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -56,11 +91,32 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/dz230407" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/dz230415" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/dz230407/back.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/dz230415/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="mainrfsdasdas" type="PythonConfigurationType" factoryName="Python">
+      <module name="idetmedvedpolesu" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="Y:\idetmedvedpolesu\venv\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/dz230414" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/dz230414/main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -111,6 +167,15 @@
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Python.main" />
+      <item itemvalue="Python.2" />
+      <item itemvalue="Python.3" />
+      <item itemvalue="Python.mainrfsdasdas" />
+      <item itemvalue="Python tests.Python tests for test_main.Test" />
+      <item itemvalue="Python tests.Python tests for test_main.Test.test_back1" />
+      <item itemvalue="Python tests.Python tests for test_main.Test.test_back2" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python tests.Python tests for test_main.Test" />
