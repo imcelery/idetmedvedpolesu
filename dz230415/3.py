@@ -6,7 +6,7 @@ import random
 import matplotlib.pyplot as plt
 WIDTH = 100
 HEIGHT = 100
-FPS = 30
+FPS = 300
 # Задаем цвета
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -15,9 +15,9 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 
 r = 2
-c = 9
-
-n = 300
+c = 6
+n = 2
+dt = 0.1
 
 class Vector:
     def __init__(self, x , y):
@@ -61,12 +61,12 @@ class Mol:
         vy = random.randint(0, 100) / 100
 
         self.pos = Vector(x, 20)
-        self.vec = Vector(0, 0)
+        self.vec = Vector(vx, 0)
         self.color = RED
-        self.vecvec = Vector(0, 0)
+
 
     def move(self):
-        new_pos = self.vec + self.pos + self.vecvec
+        new_pos = self.vec * dt + self.pos
 
         if new_pos.x < 0:
             new_pos.x = 0
@@ -83,7 +83,6 @@ class Mol:
         self.pos = new_pos
 
     def upd(self, a):
-        self.vecvec = Vector(0, 0)
         for i in a:
             d = self.pos - i.pos
 
@@ -92,7 +91,8 @@ class Mol:
 
             if rm != 0:
                 f = (c/rm) ** 12 - (c/rm) ** 6
-                self.vecvec += d.normalize() * f
+                f = float(max(min(1, f), -1))
+                self.vec += d.normalize() * f * dt
 
 
     def get_pos(self):
@@ -111,7 +111,7 @@ if __name__ == "__main__":
     # Цикл игры
     running = True
     obj = []
-    for i in range(2):
+    for i in range(n):
         obj.append(Mol())
     obj[0].color = BLUE
     ss = []

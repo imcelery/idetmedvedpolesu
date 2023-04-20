@@ -8,8 +8,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/idetmedvedpolesu.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/idetmedvedpolesu.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dynamic/svet.py" beforeDir="false" afterPath="$PROJECT_DIR$/dynamic/svet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dz230414/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/dz230414/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dz230408/aa.py" beforeDir="false" afterPath="$PROJECT_DIR$/dz230408/aa.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dz230415/3.py" beforeDir="false" afterPath="$PROJECT_DIR$/dz230415/3.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,12 +35,13 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/dz230415/3.py" />
-  </component>
-  <component name="RunManager" selected="Python.mainrfsdasdas">
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "D:/idetmedvedpolesu"
+  }
+}]]></component>
+  <component name="RunManager">
     <configuration name="2" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="idetmedvedpolesu" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -62,16 +63,16 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="3" type="PythonConfigurationType" factoryName="Python">
+    <configuration name="3" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="idetmedvedpolesu" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="Y:\idetmedvedpolesu\venv\Scripts\python.exe" />
+      <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/dz230415" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/dz230415/3.py" />

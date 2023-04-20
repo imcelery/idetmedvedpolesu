@@ -2,19 +2,31 @@
 #Алгоритм обрятный
 #сложность - строка (n)
 
-def f(n):
-    #нициализируем массив каждого положения
-    a = [0 for _ in range(n + 1)]
-    #попасть на первый можно одним способом
-    a[0] = 1
 
-    #обновляем для следующих элементов
-    for i in range(len(a) - 2):
-        a[i + 1] += a[i]
-        a[i + 2] += a[i]
+def f(n, k):
 
-    return a[n-1]
+    if n == 1:
+        if k > 9:
+            return 0
+        return 1
+    if k == 0:
+        return 1
+    s = 0
+    for i in range(min(k + 1, 10)):
+        s += f(n - 1, k - i)
+    return s
+def fout(n):
+    s = 0
+    for i in range( 9 * n  + 1):
+
+        s += f(n, i) ** 2
+    return s
+
+
 
 if __name__ == "__main__":
     n = int(input())
-    print(f(n))
+    print(fout(n//2))
+
+
+
