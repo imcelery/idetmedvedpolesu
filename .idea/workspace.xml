@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0d522a4f-2b2c-4bb2-a2a9-08671185f0a7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/idetmedvedpolesu.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/idetmedvedpolesu.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dz230408/aa.py" beforeDir="false" afterPath="$PROJECT_DIR$/dz230408/aa.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dz230415/3.py" beforeDir="false" afterPath="$PROJECT_DIR$/dz230415/3.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dz230414/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/dz230414/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,12 +32,12 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "D:/idetmedvedpolesu"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/idetmedvedpolesu&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="2" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="idetmedvedpolesu" />

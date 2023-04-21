@@ -52,9 +52,9 @@ def f_parabble(x, xs):
     return HEIGHT - (((x - WIDTH//2)**2)/m*HEIGHT)
 
 def pf_parabble(x, xs):
-    y1 = f_parabble(x - 1, xs)
-    y2 = f_parabble(x+1, xs)
-    return (y2 - y1)
+    y1 = f_parabble(x - 0.1, xs)
+    y2 = f_parabble(x+ 0.1, xs)
+    return (y2 - y1) / 0.2
 
 def rotate_matrix(d):
     return  [[np.cos(d), -np.sin(d)],
@@ -119,8 +119,8 @@ while running:
     vy = vy + g * dt
     vx = vx
     # v = dy  / dt -> dy = v * dt
-    y = int(y + vy * dt)
-    x = int(x + vx * dt)
+    y = y + vy * dt
+    x = x + vx * dt
 
     if f_parabble(np.array([x]), x_parable)[0] <= y:
         y = f_parabble(np.array([x]), x_parable)[0]
