@@ -44,6 +44,9 @@ class Donut:
             i.show(self.grafic, self.cameraDirection, self.cameraPosition, self.width, self.height, self.angel)
         self.showScreen()
 
+    def moveObject(self, i, a):
+        self.gameObjects[i]._position += a
+
 
 class Grafic:
     def __init__(self):
@@ -119,7 +122,8 @@ if __name__ == "__main__":
     gm = GameObject()
     gm.set_model(your_mesh.vectors)
     donut.addObject(gm)
-
+    vy = 0
+    y = 0
 
     while donut.running:
 
@@ -131,26 +135,42 @@ if __name__ == "__main__":
 
         keys = pygame.key.get_pressed()
 
+
+
+        vy -= 10
+        y = y + vy
+
+
+
         if keys[pygame.K_w]:
-            donut.cameraPosition = np.add(donut.cameraPosition,  donut.cameraDirection * speed)
+            donut.moveObject(0, speed * np.array([0, 0, -1]))
+            #donut.cameraPosition = np.add(donut.cameraPosition,  donut.cameraDirection * speed)
 
         elif keys[pygame.K_s]:
-            donut.cameraPosition = np.subtract(donut.cameraPosition, donut.cameraDirection * speed)
+            donut.moveObject(0, speed * np.array([0, 0, 1]))
+            #donut.cameraPosition = np.subtract(donut.cameraPosition, donut.cameraDirection * speed)
 
         if keys[pygame.K_a]:
-            normal = normalize(cross(np.array([0, 1, 0, 1]), donut.cameraDirection))
-            donut.cameraPosition = np.add(donut.cameraPosition,  normal * speed)
+            donut.moveObject(0, speed * np.array([-1, 0, 0]))
+            #normal = normalize(cross(np.array([0, 1, 0, 1]), donut.cameraDirection))
+            #donut.cameraPosition = np.add(donut.cameraPosition,  normal * speed)
 
         elif keys[pygame.K_d]:
-            normal = normalize(cross(np.array([0, 1, 0, 1]),  donut.cameraDirection))
-            donut.cameraPosition = np.subtract(donut.cameraPosition,  normal * speed)
+            donut.moveObject(0, speed * np.array([1, 0, 0]))
+            # normal = normalize(cross(np.array([0, 1, 0, 1]),  donut.cameraDirection))
+            # donut.cameraPosition = np.subtract(donut.cameraPosition,  normal * speed)
 
         if keys[pygame.K_SPACE]:
-            donut.cameraPosition = np.add(donut.cameraPosition,  np.array([0, 1, 0, 1]) *  speed)
+            vy = 100
+
+
+
 
         elif keys[pygame.K_c]:
+            pass
+            #donut.cameraPosition = np.subtract(donut.cameraPosition,  np.array([0, 1, 0, 1]) * speed)
 
-            donut.cameraPosition = np.subtract(donut.cameraPosition,  np.array([0, 1, 0, 1]) * speed)
+        donut.moveObject(0, vy * np.array([0, 1, 0]))
 
         if keys[pygame.K_q]:
             donut.angel += angelspeed
