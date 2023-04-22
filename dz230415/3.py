@@ -133,6 +133,7 @@ if __name__ == "__main__":
             pygame.draw.circle(screen, i.color, i.get_pos(), r)
             i.move()
             s += i.vec.lengh()
+
         ss.append((s/len(obj))**2)
 
 
