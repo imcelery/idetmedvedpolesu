@@ -5,12 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0d522a4f-2b2c-4bb2-a2a9-08671185f0a7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/idetmedvedpolesu.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/idetmedvedpolesu.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/dz230408/aa.py" beforeDir="false" afterPath="$PROJECT_DIR$/dz230408/aa.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dz230414/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/dz230414/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dz230415/3.py" beforeDir="false" afterPath="$PROJECT_DIR$/dz230415/3.py" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/dz230414/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/dz230414/main.py" afterDir="false" />
+>>>>>>> 90801cd3ab13a26fab802acaf18688503acabb26
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,11 +38,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< HEAD
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$/dz230421/main.py" />
   </component>
   <component name="RunManager" selected="Python.main">
     <configuration name="5" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+=======
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/idetmedvedpolesu&quot;
+  }
+}</component>
+  <component name="RunManager">
+    <configuration name="2" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+>>>>>>> 90801cd3ab13a26fab802acaf18688503acabb26
       <module name="idetmedvedpolesu" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
