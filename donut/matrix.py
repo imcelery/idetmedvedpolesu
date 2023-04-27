@@ -4,7 +4,6 @@ import numpy as np
 
 
 def cross(a, b):
-
     return np.array([a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0], a[3]])
 
 def normalize(a):
@@ -13,7 +12,6 @@ def normalize(a):
         return np.array([a[0] / l, a[1] / l, a[2] / l, a[3]])
     else:
         return np.array( [0, 0, 0, 0])
-
 
 
 def Translation(dx, dy, dz):
@@ -92,7 +90,7 @@ def PerspectiveProjection(fovy, aspect, n, f):
     sz = (f + n) / (f - n)
     dz = (-2 * f * n) / (f - n)
     return np.array([
-    [sx, 0, 0, 0],
-    [0, sy, 0, 0],
-    [0, 0, sz, dz],
-    [0, 0, -1, 0]])
+        [sx, 0, 0, 0],
+        [0, sy, 0, 0],
+        [0, 0, sz, dz],
+        [0, 0, -1, 0]])

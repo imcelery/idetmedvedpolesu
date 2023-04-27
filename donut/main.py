@@ -10,6 +10,13 @@ import numpy as np
 
 from stl import mesh
 
+import pycuda.driver as cuda
+import pycuda.autoinit
+from pycuda.compiler import SourceModule
+
+import os
+if (os.system("cl.exe")):
+    os.environ['PATH'] += ';'+r"D:\programs\vs\VC\Tools\MSVC\14.35.32215\bin\Hostx64\x64"
 
 
 class Donut:
@@ -29,6 +36,8 @@ class Donut:
         self.grafic = Grafic()
 
         self.cameraDirection = np.array([0, 0, -1, 0])
+        self.lightDirection = np.array([1, 0, 0, 0])
+
         self.cameraPosition = np.array([0, 0, 0, 1])
 
     def showScreen(self):
@@ -41,7 +50,7 @@ class Donut:
 
     def drowObjects(self):
         for i in self.gameObjects:
-            i.show(self.grafic, self.cameraDirection, self.cameraPosition, self.width, self.height, self.angel)
+            i.show(self.grafic, self.cameraDirection, self.cameraPosition, self.lightDirection, self.width, self.height, self.angel)
         self.showScreen()
 
     def moveObject(self, i, a):
@@ -67,20 +76,31 @@ class Grafic:
         self._surface.set_at((x, y), color)
 
     def drawLine(self, x1, y1, x2, y2, color):
-        c1 = y2 - y1
-        c2 = x2 - x1
-        if c1 == 0 and c2 == 0:
-            return None
-        length = math.sqrt(c1 * c1 + c2 * c2)
+        pygame.draw.line(self._surface, color, (x1 + self._width // 2, -(y1 - self._height // 2)), (x2 + self._width // 2, -(y2 - self._height // 2)))
 
-        xStep = c2 / length
-        yStep = c1 / length
+        # c1 = y2 - y1
+        # c2 = x2 - x1
+        # if c1 == 0 and c2 == 0:
+        #     return None
+        # length = math.sqrt(c1 * c1 + c2 * c2)
+        #
+        # xStep = c2 / length
+        # yStep = c1 / length
+        #
+        # for i in range(int(length)):
+        #     self.drawPixel(
+        #         math.trunc(x1 + xStep * i),
+        #         math.trunc(y1 + yStep * i),
+        #         color)
 
-        for i in range(int(length)):
-            self.drawPixel(
-                math.trunc(x1 + xStep * i),
-                math.trunc(y1 + yStep * i),
-                color)
+    def drawPoly(self, vec, color):
+        b = []
+        for i in range(3):
+            x = int(vec[i][0]) + self._width // 2
+            y = -(int(vec[i][1]) - self._height // 2)
+            b.append((x,y))
+        print(b)
+        pygame.draw.polygon(self._surface, color, b)
 
 
 class GameObject:
@@ -92,7 +112,8 @@ class GameObject:
     def set_model(self, polygons):
         self._model.load(polygons)
 
-    def show(self, grafic, cameraDirection, cameraPosition, width, height, angel):
+    def show(self, grafic, cameraDirection, cameraPosition, lightDirection, width, height, angel):
+
         m = RotationX(-90)
 
         m = np.matmul(RotationY(angel), m)
@@ -106,10 +127,12 @@ class GameObject:
 
         m = np.matmul(PerspectiveProjection(100, width / height, 1, 10000), m)
 
-        self._model.show(grafic, cameraDirection, m)
+        self._model.show(grafic, cameraDirection, cameraPosition,lightDirection, m)
 
 
 if __name__ == "__main__":
+
+
     donut = Donut()
 
 
@@ -125,7 +148,12 @@ if __name__ == "__main__":
     vy = 0
     y = 0
 
+    clock = pygame.time.Clock()
+
+
+
     while donut.running:
+        #ssprint(donut.clock.get_fps())
 
         donut.clock.tick(donut.fps)
 
@@ -137,8 +165,8 @@ if __name__ == "__main__":
 
 
 
-        vy -= 10
-        y = y + vy
+        # vy -= 10
+        # y = y + vy
 
 
 
@@ -161,7 +189,8 @@ if __name__ == "__main__":
             # donut.cameraPosition = np.subtract(donut.cameraPosition,  normal * speed)
 
         if keys[pygame.K_SPACE]:
-            vy = 100
+            pass
+            #vy = 100
 
 
 
@@ -182,3 +211,4 @@ if __name__ == "__main__":
 
 
         donut.drowObjects()
+
