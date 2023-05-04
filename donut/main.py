@@ -24,7 +24,7 @@ class Donut:
         self.gameObjects = []
         self.width = 1200
         self.height = 800
-        self.fps = 30
+        self.fps = 300
         self.running = True
         self.angel = 0
 
@@ -99,7 +99,6 @@ class Grafic:
             x = int(vec[i][0]) + self._width // 2
             y = -(int(vec[i][1]) - self._height // 2)
             b.append((x,y))
-        print(b)
         pygame.draw.polygon(self._surface, color, b)
 
 
@@ -140,7 +139,7 @@ if __name__ == "__main__":
 
     angelspeed = 5
 
-    your_mesh = mesh.Mesh.from_file('xxx.stl')
+    your_mesh = mesh.Mesh.from_file('pikachu_1gen_flowalistik.stl')
 
     gm = GameObject()
     gm.set_model(your_mesh.vectors)
@@ -153,7 +152,7 @@ if __name__ == "__main__":
 
 
     while donut.running:
-        #ssprint(donut.clock.get_fps())
+        print(donut.clock.get_fps())
 
         donut.clock.tick(donut.fps)
 

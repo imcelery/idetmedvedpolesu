@@ -1,7 +1,7 @@
 import pygame as pg
 
 
-fps = 300
+fps = 30
 black = (0, 0, 0)
 white = (255, 255, 255)
 pg.init()
@@ -64,7 +64,7 @@ while True:
     for i in range(len(a)):
         a[i].move()
         s += abs(a[i].h)
-    print(s)
+
 
 
     pg.display.flip()

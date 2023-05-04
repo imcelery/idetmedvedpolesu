@@ -1,3 +1,4 @@
+import math
 import random
 
 from matrix import *
@@ -7,6 +8,7 @@ import pycuda.driver as cuda
 from pycuda import compiler, gpuarray, tools
 import threading
 import numpy as np
+import time
 
 
 # -- initialize the device
@@ -29,13 +31,13 @@ def matmul(a_gpu, b_gpu):
       const int tx = threadIdx.x;
       const int ty = threadIdx.y;
 
-      const int ms = %(GR)s;
+      
     
 
 
     float Csub = 0;
     
-    int c = bx * ms * 4;
+    int c = by * %(mx)s * %(gr)s * 4 + bx * %(gr)s * 4;
     
     for(int i = 0; i < 4; i++){
      Csub += B[tx * 4 + i] * A[ty * 4 + i + c];
@@ -46,12 +48,18 @@ def matmul(a_gpu, b_gpu):
     """
 
 
-    gr = 48
+    gr = 4
 
-    # get the kernel code from the template
-    # by specifying the constants MATRIX_SIZE and BLOCK_SIZE
+
+    m = math.ceil(len(a_gpu) / gr)
+
+    mx = int(m / math.ceil(math.sqrt(m)))
+    my = int(math.ceil(m / mx))
+
+
     kernel_code = kernel_code_template % {
-        'GR': gr,
+        'mx': mx,
+        'gr': gr
 
         }
 
@@ -66,13 +74,16 @@ def matmul(a_gpu, b_gpu):
 
     # call the kernel on the card
 
+
+
     matrixmul(
         # inputs
         a_gpu, b_gpu,
         # output
         c_gpu,
         # grid of multiple blocks
-        grid = (math.ceil(len(a_gpu)/gr),1),
+        grid = (mx, my),
+
         # block of multiple threads
         block = (4, gr, 1),
         )
@@ -94,35 +105,44 @@ class Model:
 
     def multiple(self, matrix, width, height):
 
-        # some_list = self.polygons.reshape(len(self.polygons)*3, 4)
-        #
-        # some_list = some_list.astype(np.float32)
-        #
-        # some_list_gpu = gpuarray.to_gpu(some_list)
-        #
-        #
-        # some_matrix = matrix.astype(np.float32)
-        # some_matrix_gpu = gpuarray.to_gpu(some_matrix)
-        #
-        # output = matmul(some_list_gpu, some_matrix_gpu).get()
-        #
-        # for i in range(len(output)):
-        #     output[i][0] = output[i][0] / output[i][3] * width / 2
-        #     output[i][1] = output[i][1] / output[i][3] * height / 2
-        #
-        # pol = output.reshape((len(output)//3, 3, 4))
-        # return pol
+        beg = time.time()
+        some_list = self.polygons.reshape(len(self.polygons)*3, 4)
+
+        some_list = some_list.astype(np.float32)
+
+        some_list_gpu = gpuarray.to_gpu(some_list)
+
+
+        some_matrix = matrix.astype(np.float32)
+        some_matrix_gpu = gpuarray.to_gpu(some_matrix)
+
+        output = matmul(some_list_gpu, some_matrix_gpu).get()
+
+        print(time.time() - beg)
+        beg = time.time()
+        for i in range(len(output)):
+            output[i][0] = output[i][0] / output[i][3] * width / 2
+            output[i][1] = output[i][1] / output[i][3] * height / 2
+
+        pol = output.reshape((len(output)//3, 3, 4))
+        print(time.time() - beg)
+
+
 
         o = []
+        beg = time.time()
         for i in range(len(self.polygons)):
             p = []
             for j in range(len(self.polygons[i])):
                 vertex = np.matmul(matrix, self.polygons[i, j])
-                vertex[0] = vertex[0] / vertex[3] * width / 2
-                vertex[1] = vertex[1] / vertex[3] * height / 2
+                # vertex[0] = vertex[0] / vertex[3] * width / 2
+                # vertex[1] = vertex[1] / vertex[3] * height / 2
                 p.append(vertex)
             o.append(p)
+        print(time.time() - beg)
+        print()
         return o
+
 
     def show(self, grafic, cameraDirection, cameraPosition, light_direction, matrix):
         screen_vectrors = self.multiple(matrix, grafic._width, grafic._height)
@@ -152,9 +172,11 @@ class Model:
                 l = np.linalg.norm(cameraPosition - p)
                 s = np.dot(normal, light_direction)
                 s = max(min_light, s)
-                o.append([l, i, s])
+                o.append([l, i, s])\
+
 
         on = np.array(o, dtype=object)
+
         on = on[on[:, 0].argsort()]
 
 

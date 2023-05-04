@@ -95,7 +95,7 @@ while True:
             s += a[i][j].h
             vs += a[i][j].vec
 
-    print(s, vs)
+
 
 
     pg.display.flip()
