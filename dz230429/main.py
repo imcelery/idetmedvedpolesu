@@ -121,9 +121,10 @@ class Alg:
         return self.d_move[rr]
 
     def mutation(self):
+        s = deepcopy(self.w1)
         p1 = (np.random.random(self.w1.shape) > 0.99).astype(int)
         self.w1[p1] = (np.random.random(self.w1.shape) - 0.5)[p1]
-
+        print(s - self.w1)
         p2 = (np.random.random(self.w2.shape) > 0.99).astype(int)
         self.w2[p2] = (np.random.random(self.w2.shape) - 0.5)[p2]
 

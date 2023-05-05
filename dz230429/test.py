@@ -63,10 +63,10 @@ class Alg:
 
 
 class Unit:
-    def __init__(self):
+    def __init__(self, w = None):
         self.speed = random.randint(-5, 5)
         self.pos = random.randint(-30, 30)
-        self.alg = Alg()
+        self.alg = Alg(w)
 
     def upd(self):
         self.speed += self.alg.get_move(np.array([self.speed/100, self.pos/100]))[0]
@@ -86,7 +86,7 @@ clock = pygame.time.Clock()
 
 tick = 0
 
-gen_age = 100 + random.randint(-20, 20)
+gen_age = 200 + random.randint(-20, 20)
 while True:
     clock.tick(FPS)
     screen.fill(BLACK)
