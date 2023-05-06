@@ -1,4 +1,5 @@
 import collections
+from collections import deque
 
 def obhod(d, s, was):
     if s not in was:
@@ -21,10 +22,27 @@ def f():
             if a[j] == 1:
                 d[i].append(j + 1)
 
-    if len(obhod(d, 1, set())) == n and (c // 2) + 1 == n:
-        print("YES")
-    else:
-        print("NO")
+    b, s = list(map(int, input().split()))
 
+    if b == s:
+        print(0)
+        return None
+
+    def g(d, b, s):
+
+        q = deque([b])
+
+        was = set()
+
+        while len(q) != 0:
+            a = q.popleft()
+            for i in d[a]:
+                if i not in was:
+                    if i == s:
+                        return None
+                    q.append(i)
+        return -1
+
+    print(g(d, b, s))
 
 a = f()

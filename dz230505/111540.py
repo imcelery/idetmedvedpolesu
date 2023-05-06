@@ -1,5 +1,6 @@
 import collections
-
+import sys
+sys.ma
 def obhod(d, s, was):
     if s not in was:
         was.add(s)
