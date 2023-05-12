@@ -87,7 +87,7 @@ class GameObject:
 class Alg:
     def __init__(self, w=None):
         if w is None:
-            len_w = [25, 20, 8]
+            len_w = [75, 20, 9]
             self.w = []
             for i in range(len(len_w) - 1):
                 self.w.append(np.random.random((len_w[i], len_w[i + 1])) * 2 - 1)
@@ -106,6 +106,7 @@ class Alg:
             5: np.array((1, 1)),  # вправо-вниз
             6: np.array((-1, -1)),  # влево-вверх
             7: np.array((-1, 1)),  # влево-вниз
+            8: np.array((0, 0)),  # влево-вниз
 
         }
 
@@ -166,7 +167,7 @@ class Person(GameObject):
         return b
 
     def get_move(self, m1, m2, m3):
-        a = np.concatenate([self.get_slide(m1).reshape((-1,))], axis=0)
+        a = np.concatenate([self.get_slide(m1).reshape((-1,)), self.get_slide(m2).reshape((-1,)), self.get_slide(m3).reshape((-1,))], axis=0)
         self.spend_energy()
         return self.alg.get_move(a)
 
@@ -222,7 +223,7 @@ class World:
         self.grass_dict = self.create_obj(self.grass, Grass)
         self.herbivore = (np.random.random(self.shape) > 0.99  ).astype(int)
         self.herbivore_dict = self.create_obj(self.herbivore, Herbivore)
-        self.predator = (np.random.random(self.shape) > 1).astype(int)
+        self.predator = (np.random.random(self.shape) > 0.996).astype(int)
         self.predator_dict = self.create_obj(self.predator, Predator)
         self.herbivore_deaded_count = 0
         self.predator_deaded_count = 0
@@ -364,46 +365,57 @@ class World:
                         self.count_object += 1
                         self.herbivore[xy] += 1
 
-        # dd = np.sum(np.sum(self.predator)) <= dd_porog
-        # # dd = sum([len(el) for el in self.predator_dict.values()]) <= 10
-        # if dd:
-        #     self.predator_deaded_count += 1
-        #     list_herbivore = deepcopy(self.predator_dict).items()
-        #
-        #     a = []
-        #     for xy, el in list_herbivore:
-        #         for i, eh in enumerate(el):
-        #             a.append([eh.age, np.array(xy), eh])
-        #
-        #     a.sort(key=lambda x: x[0], reverse=True)
-        #     for i in range(dd_porog // 2):
-        #         f = np.array([[0, 1], [0, -1], [1, 0], [-1, 0]])
-        #         for j in f:
-        #             new_h = Predator(tuple(a[i][1] + j), self.count_object, w=a[i][2].get_w())
-        #             new_h.mutation()
-        #             self.predator_dict[tuple(a[i][1] + j)].append(new_h)
-        #
-        #             self.predator[tuple(a[i][1] + j)] += 1
-        # else:
-        #     list_predator = deepcopy(self.predator_dict).items()
-        #     for xy, el in list_predator:
-        #         for i, ep in enumerate(el):
-        #             delta = ep.get_move(self.grass, self.herbivore, self.predator)
-        #             self.predator[xy] -= 1
-        #             ep.x += delta[0]
-        #             ep.x = ep.x % (WIDTH // WIDTH_OBJECT)
-        #             ep.y += delta[1]
-        #             ep.y = ep.y % (HEIGHT // HEIGHT_OBJECT)
-        #             self.predator[(ep.x, ep.y)] += 1
-        #             self.predator_dict[xy].remove(ep)
-        #             self.predator_dict[(ep.x, ep.y)].append(ep)
-        #             if ep.energy >= energy_for_sex_with_yourself :
-        #                 ep.energy -= meat_man_energy
-        #                 new_p = Predator(xy, self.count_object, w=ep.get_w())
-        #                 new_p.mutation()
-        #                 self.predator_dict[xy].append(new_p)
-        #                 self.count_object += 1
-        #                 self.predator[xy] += 1
+        dd = np.sum(np.sum(self.predator)) <= dd_porog
+        if dd:
+            self.predator_deaded_count += 1
+            a = []
+            b = []
+            s = 0
+            list_herbivore = deepcopy(self.predator_dict).items()
+            for xy, el in list_herbivore:
+                for i, eh in enumerate(el):
+                    a.append(eh)
+                    b.append(eh.eaten)
+                    s += eh.eaten
+            print(s)
+            b = np.array(b)
+
+            self.predator = (np.random.random(self.shape) > 0.99).astype(int)
+            self.predator_dict = self.create_obj(self.predator, Predator)
+            self.count_object = 0
+
+            for xy, el in self.predator_dict.items():
+                for i, eh in enumerate(el):
+
+                    u1, u2 = None, None
+                    while u1 == u2:
+                        u1 = random.choices(a, weights=b)[0]
+                        u2 = random.choices(a, weights=b)[0]
+
+                    eh.alg.sex(u1.alg, u2.alg)
+
+                    eh.mutation()
+
+        else:
+            list_predator = deepcopy(self.predator_dict).items()
+            for xy, el in list_predator:
+                for i, ep in enumerate(el):
+                    delta = ep.get_move(self.grass, self.herbivore, self.predator)
+                    self.predator[xy] -= 1
+                    ep.x += delta[0]
+                    ep.x = ep.x % (WIDTH // WIDTH_OBJECT)
+                    ep.y += delta[1]
+                    ep.y = ep.y % (HEIGHT // HEIGHT_OBJECT)
+                    self.predator[(ep.x, ep.y)] += 1
+                    self.predator_dict[xy].remove(ep)
+                    self.predator_dict[(ep.x, ep.y)].append(ep)
+                    if ep.energy >= energy_for_sex_with_yourself:
+                        ep.energy -= meat_man_energy
+                        new_p = Predator(xy, self.count_object, w=ep.get_w())
+                        new_p.mutation()
+                        self.predator_dict[xy].append(new_p)
+                        self.count_object += 1
+                        self.predator[xy] += 1
 
     def get_stat(self):
         return (
@@ -436,6 +448,8 @@ class WorldEvolution:
         self.max_meat_man_age = 0
         self.max_grass_man_age = 0
 
+        self.age = 0
+
 
         self.font = pygame.font.Font(None, 24)
 
@@ -446,6 +460,7 @@ class WorldEvolution:
         while True:
             if not self.paused:
                 self._process_game_logic()
+                self.age += 1
             #print(self.clock.get_fps())
             self.clock.tick(FPS)
             self._handle_input()
@@ -585,17 +600,21 @@ class WorldEvolution:
             self.screen.blit(text, (crx, cry + 250 + (i + j) * 30 ))
             j += 1
 
+        text = self.font.render("Год " + str(self.age), False,
+                                (255, 255, 255))
+        self.screen.blit(text, (crx, cry + 230 ))
+
 
 
 if __name__ == "__main__":
-    grass_rise_time = 150
+    grass_rise_time = 170
 
-    grass_men_energy = 30
+    grass_men_energy = 50
     meat_man_energy = 30
 
-    energy_for_sex_with_yourself = 60
+    energy_for_sex_with_yourself = 100
 
-    energy_for_food = 6
+    energy_for_food = 8
     energy_for_meat = 1
 
     dd_porog = 10
