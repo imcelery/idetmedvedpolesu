@@ -18,8 +18,9 @@ class KuchaGovna:
 
     def razmeshat_vniz(self, i):
 
-        while (self.maxsize - i) > self.maxsize / 2:
+        while i <= self.maxsize // 2:
             largest = i
+            print(largest)
             left = 2 * i + 1
             right = 2 * i + 0
             if self._govno[i] < self._govno[left]:
@@ -68,10 +69,11 @@ class KuchaGovna:
         self._govno[self._count - 1] = -math.inf
         self.razmeshat_vniz(0)
         return out
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    g = KuchaGovna([1, 3, 2, -21])
 
-    print(g.visrat())
+if __name__ == '__main__':
+    g = KuchaGovna([-8,-94,-30,-98,-27,62,26])
+    for i in range(7):
+        print(g.visrat())
+        print(g)
     print(g)
 
