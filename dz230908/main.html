@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="main.css">
+
+<title>Заголовок</title>
+</head>
+<body>
+
+<h1>Это заголовок параграфа</h1>
+<form name="search">
+    <input type="submit" name="gennnn" value="Сгенерировать" />
+</form>
+
+<p>Массив</p>
+<p id="array"></p>
+<p>Максимальный элемент</p>
+<p id="maxxx"></p>
+
+<script>
+    
+	 
+	function max(a) {
+		var m = a[0];
+		for(i = 1; i < a.length; i++)if(m < a[i]) m = a[i];
+		return m;
+	}
+	
+	function gen(a) {
+		var o = new Array();
+		for(i = 0; i < a; i++) o[i] =  Math.floor(Math.random() * 200 - 100);
+		return o;
+	}
+	
+	function doThings(e){
+		var a = 10;
+		var f = gen(a);
+		document.getElementById("array").textContent  = f.toString();
+		var m = max(f);
+		document.getElementById("maxxx").textContent  = m;
+	}
+	var gendButton = document.search.gennnn;
+	gendButton.addEventListener("click", doThings);
+	doThings();
+	
+	
+</script>
+</body>
+</html>

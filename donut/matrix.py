@@ -6,6 +6,7 @@ import numpy as np
 def cross(a, b):
     return np.array([a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0], a[3]])
 
+
 def normalize(a):
     l = np.linalg.norm(a)
     if l != 0.:
@@ -69,7 +70,7 @@ def RotationZ(angle):
 
 def LookAt(eye, target, up):
 
-    vz = normalize(np.subtract(eye, target))
+    vz = normalize(np.subtract(target, eye))
 
     vx = normalize(cross(up, vz))
 
@@ -85,8 +86,8 @@ def LookAt(eye, target, up):
 
 def PerspectiveProjection(fovy, aspect, n, f):
     radians = np.pi / 180 * fovy
-    sx = 1 / np.tan(radians / 2) / aspect
-    sy = 1 / np.tan(radians / 2)
+    sx = (1 / np.tan(radians / 2)) / aspect
+    sy = (1 / np.tan(radians / 2))
     sz = (f + n) / (f - n)
     dz = (-2 * f * n) / (f - n)
     return np.array([
