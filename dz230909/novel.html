@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="main.css">
+
+<title>Бесконечное гетто</title>
+<meta charset="utf-8">
+</head>
+<body>
+
+<div class = "main">
+    <img src="" id = "screen">
+    <div class = text >
+        <p class = "script_text" id = "text">Текст</p>
+    </div>
+    <div class = input >
+      <button class = "left" id = "left" onclick="left()"> left</button>
+      <button class = "right"  id = "right" onclick="right()"> right </button>
+    </div>
+</div>
+
+
+<script>
+function right(){
+    let text_data = JSON.parse( sessionStorage.text_data );
+    let current_text = text_data[parseInt(sessionStorage.text_id)];
+    sessionStorage.setItem('text_id', current_text.right);
+    set_screen();
+}
+
+function left(){
+    let text_data = JSON.parse( sessionStorage.text_data );
+    let current_text = text_data[parseInt(sessionStorage.text_id)];
+    sessionStorage.setItem('text_id', current_text.left);
+    set_screen();
+}
+
+function set_screen(){
+    let text_data = JSON.parse( sessionStorage.text_data );
+    let screen_data = JSON.parse( sessionStorage.screen_data );
+
+    let current_text = text_data[parseInt(sessionStorage.text_id)];
+    let current_screen = screen_data[current_text.screen];
+
+    document.getElementById("screen").src = current_screen.url;
+    document.getElementById("text").innerHTML = current_text.text;
+
+    if(current_text.type == "forward"){
+        document.getElementById("right").style.display = "none";
+        document.getElementById("left").innerHTML = current_text.left_text;
+
+    } else if (current_text.type == "choose"){
+
+        document.getElementById("right").style.display = "block";
+        document.getElementById("left").innerHTML = current_text.left_text;
+        document.getElementById("right").innerHTML = current_text.right_text;
+
+    }
+}
+
+sessionStorage.setItem('text_id', 0);
+fetch(
+  "https://opensheet.elk.sh/1nbprnklUzDZ0egvgqyblgsNr_MrOO4y6WXpPDCPJmTo/screen"
+)
+.then((res) => res.json())
+.then((data) => {
+
+    sessionStorage.screen_data = JSON.stringify(data);
+
+    fetch(
+        "https://opensheet.elk.sh/1nbprnklUzDZ0egvgqyblgsNr_MrOO4y6WXpPDCPJmTo/text"
+    )
+    .then((res) => res.json())
+    .then((data) => {
+        sessionStorage.text_data = JSON.stringify(data);
+        set_screen();
+    });
+
+});
+
+</script>
+</body>
+</html>
