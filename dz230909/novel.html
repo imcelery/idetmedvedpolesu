@@ -9,13 +9,17 @@
 <body>
 
 <div class = "main">
-    <img src="" id = "screen">
+    <div class = "main_screen">
+        <img src="" id = "screen" class = "screen_img" >
+    </div>
+
     <div class = text >
         <p class = "script_text" id = "text">Текст</p>
     </div>
+
     <div class = input >
-      <button class = "left" id = "left" onclick="left()"> left</button>
-      <button class = "right"  id = "right" onclick="right()"> right </button>
+      <button class = "chosebut" id = "left" onclick="left()"> left</button>
+      <button class = "chosebut"  id = "right" onclick="right()"> right </button>
     </div>
 </div>
 
@@ -54,6 +58,13 @@ function set_screen(){
         document.getElementById("right").style.display = "block";
         document.getElementById("left").innerHTML = current_text.left_text;
         document.getElementById("right").innerHTML = current_text.right_text;
+
+    }
+
+    else if (current_text.type == "end"){
+
+    document.getElementById("right").style.display = "none";
+    document.getElementById("left").style.display = "none";
 
     }
 }

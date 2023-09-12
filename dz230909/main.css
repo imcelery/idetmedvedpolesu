@@ -1,26 +1,71 @@
-img {
-  width:50vw;
-  margin: auto;
-  border: 1px solid red;
+div {
+  margin-left: auto;
+  margin-right: auto;
+  
 }
 
 div.main {
-  width:50vw;
-  margin: auto;
-  border: 1px solid red;
+  width: 60vw;
+  height: 80vh;
+}
+
+div.main_screen {
+  border: 6px solid  #7922CC;
+  border-radius: 25px 25px 0px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;  
+  height: 65%; 
+}
+
+img.screen_img{
+  max-width: 100%;
+  max-height: 100%;
+  height: auto;
+}
+
+div.text {
+  margin-top: 10px;
+  background-color: #EEDDFF;
+  border: 6px solid #7922CC;
+  position: relative;  
+  height: 20%; 
 }
 
 p.script_text{
-    text-align: center;
+  text-align: center;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 22px;
 }
 
 div.input {
-    display: flex;
+  margin-top: 10px;
+  display: flex;
   justify-content: space-between;
-  background-color: gray;
-  padding: 1em;
+  background-color: #EEDDFF;
+  padding-top: 1em;
+  padding-bottom: 1em;
   box-sizing: border-box;
+  border: 6px solid #7c15dd;
+  border-radius: 0px 0px 25px 25px;
+  margin-bottom: 10px;
+
+  position: relative;  
+  height: 15%; 
 }
 
-
+button.chosebut {
+  border: 6px solid #3e0474;
+  background-color: #9852dd;
+  border-radius: 25px;
+  padding: auto 2em;
+  font-size: 22px;
+  margin-left: auto;
+  margin-right: auto;
+}
 
