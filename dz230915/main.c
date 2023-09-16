@@ -1,4 +1,4 @@
-
+//https://www.tinkercad.com/things/hr0R0XUJJn8-neat-trug/editel?sharecode=hSdStL78T2_HkBECKIxWFYbE5YT-M5HCZm2DftLmxOw
 int analogPin1 = A0; 
 int analogPin2 = A1;
                     
