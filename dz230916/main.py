@@ -10,15 +10,17 @@ class MyThread(Thread):
         self.s = True
 
     def run(self):
-        if s:
-            amount = random.randint(5, 6)
-            time.sleep(amount)
-        if s:
-            msg = "%s ВЫПОЛНИЛ ПРИКАЗ" % self.name
+        while self.s:
+            time.sleep(1)
+
+    def check(self):
+        if self.is_alive():
+            msg = "%s is working" % self.name
             print(msg)
 
     def stop(self):
         self.s = False
+
 class ThredsHolder:
     def __init__(self):
         self.threads = dict.fromkeys(list(range(10)))
@@ -29,24 +31,16 @@ class ThredsHolder:
             t.start()
             self.threads[i] = t
 
-    def status(self, i):
-        if i in self.threads.keys():
+    def list(self):
+        for i in self.threads.keys():
             if self.threads[i] != None:
-                if self.threads[i].is_alive():
-                    print(f"Поток {i} ЖИВ")
-                else:
-                    print(f"Поток {i} УМЕР")
-            else:
-                print(f"Поток {i} И НЕ ЖИЛ ВОВСЕ")
+                self.threads[i].check()
 
     def stop(self, i):
         if i in self.threads.keys():
             if self.threads[i] != None:
-                if self.threads[i].is_alive():
-                    self.threads[i].stop()
-                    print(f"Поток {i} УБИЛИ")
-            else:
-                print(f"Поток {i} И НЕ ЖИЛ ВОВСЕ")
+                self.threads[i].stop()
+
 
 
 
@@ -57,7 +51,7 @@ if __name__ == "__main__":
         s = input().split()
         if s[0] == "start":
             TH.start(int(s[1]))
-        if s[0] == "status":
-            TH.status(int(s[1]))
+        if s[0] == "list":
+            TH.list()
         if s[0] == "stop":
             TH.stop(int(s[1]))
