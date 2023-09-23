@@ -1,29 +1,28 @@
 class Solution:
-             
+           
+    
     def getKth(self, lo: int, hi: int, k: int) -> int:
+        @cache
         def getPower(x):
-            c = 0
-            while x != 1:
-                if x % 2==0:
-                    x = x // 2
-                else:
-                    x = 3  *x + 1
-                c+=1
-            return c
+            if x == 1:
+                return 0
+            if x % 2==0:
+                return 1 + getPower(x // 2)
+            else:
+                return 1 + getPower(3  * x + 1)
 
-        a = []
-
+        k -= 1
+        d = {}
         for i in range(hi - lo + 1):
-            a.append([0, 0])
             x = i + lo
-            c = 0
-            while x != 1:
-                if x % 2==0:
-                    x = x // 2
-                else:
-                    x = 3  *x + 1
-                c+=1
-            a[i][0] = c
-            a[i][1] = i + lo
-        a.sort(key=lambda x: x[0])
-        return a[k - 1][1]
+            c = getPower(x)
+            if c in d.keys():
+                d[c].append(i + lo)
+            else:
+                d.update({c : [i + lo]})
+
+        for i in sorted(d.keys()):
+            if k >= len(d[i]):
+                k -= len(d[i])
+            else:
+                return d[i][k]
