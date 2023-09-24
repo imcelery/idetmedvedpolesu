@@ -28,11 +28,11 @@ class ChatReaderThread(Thread):
         self.b = False
 
     def getMessage(self):
+        if self.message != None:
+            s = self.message
+            self.message = None
+            return s
         if self.is_alive():
-            if self.message != None:
-                s = self.message
-                self.message = None
-                return s
             return None
         return False
 
