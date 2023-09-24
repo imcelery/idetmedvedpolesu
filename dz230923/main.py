@@ -1,31 +1,28 @@
-import socket
+class Solution:
+    def getKth(self, lo: int, hi: int, k: int) -> int:
+        d = {}
+        def getPower(x, d):
+            if x in d.keys():
+                return d[x]
 
-def f():
-    HOST = "127.0.0.1"
-    PORT = 65431
+            elif x != 1: 
+                if x % 2==0:
+                    c = 1 + getPower(x // 2, d)
+                    d.update({x : c})
+                    return c
+                else:
+                    c = 1 + getPower(x * 3 + 1, d)
+                    d.update({x : c})
+                    return c
+            return 0
 
+        a = []
 
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.bind((HOST, PORT))
-        s.listen()
-        while True:
-            conn, addr = s.accept()
-            with conn:
-                while True:
-                    data = conn.recv(1024)
-                    print(f"Received {data.decode('utf-8')}")
-
-                    if data.decode('utf-8') == "goodbye":
-                        conn.close()
-                        return None
-
-                    a = input()
-                    conn.sendall(bytes(a, 'UTF-8'))
-
-                    if a == "goodbye":
-                        conn.close()
-                        return None
-
-
-
-f()
+        for i in range(hi - lo + 1):
+            a.append([0, 0])
+            x = i + lo
+            c = getPower(x, d)
+            a[i][0] = c
+            a[i][1] = i + lo
+        a.sort(key=lambda x: x[0])
+        return a[k - 1][1]
