@@ -2,8 +2,8 @@ import os
 import socket
 from threading import Thread
 
-HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
-PORT = 65431  # Port to listen on (non-privileged ports are > 1023)
+HOST = "127.0.0.1"
+PORT = 65431
 
 class ChatReaderThread(Thread):
     def __init__(self, conn, addr):
@@ -12,6 +12,7 @@ class ChatReaderThread(Thread):
         self.conn = conn
         self.addr = addr
         self.b = True
+        self.message = None
 
     def run(self):
         with self.conn:
@@ -20,49 +21,63 @@ class ChatReaderThread(Thread):
                     data = self.conn.recv(1024)
                     if data.decode('UTF-8') == "goodbye":
                         self.stop()
-                    print(data.decode('UTF-8'))
+                    self.message = data.decode('UTF-8')
                 except ConnectionAbortedError:
                     break
     def stop(self):
         self.b = False
 
-class ChatWriterThread(Thread):
-    def __init__(self, conn, addr):
+    def getMessage(self):
+        if self.message != None:
+            s = self.message
+            self.message = None
+            return s
+        if self.is_alive():
+            return None
+        return False
+
+    def write(self, message):
+        self.conn.sendall(bytes(str(self.addr[0]) + " " + str(self.addr[1]) + " " + message, 'UTF-8'))
+
+class ChatMeneger(Thread):
+    def __init__(self):
         """Инициализация потока"""
         Thread.__init__(self)
-        self.conn = conn
-        self.addr = addr
         self.b = True
+        self.threadList = []
 
     def run(self):
-        with self.conn:
-            while self.b:
-                data = input()
-                if self.b:
-                    self.conn.sendall(bytes(data, 'UTF-8'))
-                    if data == "goodbye":
-                        self.stop()
+        while self.b:
+            for i in self.threadList:
+                message = i.getMessage()
+                if message is not None:
+                    if not message:
+                        self.threadList.remove(i)
+                    else:
+                        for j in self.threadList:
+                            if i != j:
+                                j.write(message)
+
     def stop(self):
         self.b = False
+
+    def addThread(self, th):
+        self.threadList.append(th)
 
 
 def main():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        chM = ChatMeneger()
+        chM.start()
+
         s.bind((HOST, PORT))
         s.listen()
-        conn, addr = s.accept()
-        crt = ChatReaderThread(conn, addr)
-        cwt = ChatWriterThread(conn, addr)
+        while True:
+            conn, addr = s.accept()
+            crt = ChatReaderThread(conn, addr)
+            crt.start()
 
-        crt.start()
-        cwt.start()
-
-        while crt.b and cwt.b:
-            pass
-
-        crt.stop()
-        cwt.stop()
-
+            chM.addThread(crt)
 
 if __name__ == "__main__":
     main()
