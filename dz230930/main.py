@@ -51,9 +51,13 @@ class MainWindow(QMainWindow):
 
         self.stacklayout2.addWidget(self.value_b)
 
+        btn = QPushButton("Отфильтровать")
+        btn.pressed.connect(self.reserch)
+        self.stacklayout2.addWidget(btn)
+
 
         self.checkbox = QCheckBox("Вложения", self)
-        self.stacklayout2.addWidget(self.checkbox)
+        self.stacklayout.addWidget(self.checkbox)
 
         self.label = QLabel("")
 
@@ -71,49 +75,25 @@ class MainWindow(QMainWindow):
         self.labelvverh.setWordWrap(True)
         self.boxlayout.addWidget(self.labelvverh)
 
+        self.d = collections.defaultdict(list)
+        self.founded = False
+        self.filters = []
 
-
-
-    def reserch(self):
-        def getrashirenue(s):
-            for i in range(len(s) - 1, -1, -1):
-                if s[i] == ".":
-                    return s[:i], s[i + 1:]
-            return s, ""
-
-        def parse_folder(path):
-            files = []
-            for file in os.listdir(path):
-                if os.path.isdir(path + '/' + file):
-                    files.extend(parse_folder(path + '/' + file))
-                else:
-                    files.append((file, os.path.getsize(path + "/" + file)))
-            return files
-
-        directory = self.value_a.text()
-        if os.path.isdir(directory):
-            d = collections.defaultdict(list)
-            if not self.checkbox.checkState():
-                files = [(file, os.path.getsize(directory + "/" + file)) for file in os.listdir(directory) if os.path.isfile(f'{directory}/{file}')]
-            else:
-                files = parse_folder(directory)
-
-            for i in files:
-                f, r = getrashirenue(i[0])
-                d[r].append([f, i[1]])
-
-            self.label.setText("Колво файлов : " + str(len(files)))
+    def draw(self):
+        if self.founded:
             s = ""
-            a = self.value_b.text().split()
-            for i in d.keys():
-                if i not in a:
-                    s += i + ": " + str(len(d[i])) + " "
+            dSorted = collections.defaultdict(list)
+            for i in self.d.keys():
+                if i not in self.filters:
+                    dSorted[i] = self.d[i]
+                    s += i + ": " + str(len(self.d[i])) + " "
+            self.label.setText("Колво файлов : " + str(sum(list(map(len, dSorted.values())))))
             self.labelPodrobno.setText(s)
 
             files = []
-            for i in d.keys():
-                if i not in a:
-                    files += d[i]
+            for i in dSorted.keys():
+                for j in dSorted[i]:
+                    files.append((j[0] + "." + i, j[1]))
 
             files.sort(key=lambda x: x[1])
             s1 = ""
@@ -124,11 +104,42 @@ class MainWindow(QMainWindow):
 
             self.labelvniz.setText(s1)
             self.labelvverh.setText(s2)
-
-
-
         else:
             self.label.setText("Нет такой папки")
+    def filter(self):
+        self.filters = self.value_b.text().split()
+        self.draw()
+    def reserch(self):
+        def getrashirenue(s):
+            for i in range(len(s) - 1, -1, -1):
+                if s[i] == ".":
+                    return s[:i], s[i + 1:]
+            return s, ""
+
+        def parse_folder(path, b):
+            if b:
+                filess = []
+
+                for address, dirs, files in os.walk(path):
+                    for name in files:
+                        filess.append((os.path.join(address, name), os.path.getsize(os.path.join(address, name))))
+                return filess
+            else:
+                return [(os.path.join(path, f), os.path.getsize(os.path.join(path, f))) for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
+
+
+        directory = self.value_a.text()
+        if os.path.isdir(directory):
+            self.founded = True
+            self.d.clear()
+            files = parse_folder(directory, self.checkbox.checkState())
+            for i in files:
+                f, r = getrashirenue(i[0])
+                self.d[r].append([f, i[1]])
+        else:
+            self.founded = False
+            self.label.setText("Нет такой папки")
+        self.filter()
 
 
 
