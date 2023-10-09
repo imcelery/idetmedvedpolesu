@@ -52,7 +52,7 @@ class MainWindow(QMainWindow):
         self.stacklayout2.addWidget(self.value_b)
 
         btn = QPushButton("Отфильтровать")
-        btn.pressed.connect(self.reserch)
+        btn.pressed.connect(self.filter)
         self.stacklayout2.addWidget(btn)
 
 
@@ -67,9 +67,15 @@ class MainWindow(QMainWindow):
         self.labelPodrobno.setWordWrap(True)
         self.boxlayout.addWidget(self.labelPodrobno)
 
+        l = QLabel("Самые маленькие")
+        self.boxlayout.addWidget(l)
+
         self.labelvniz = QLabel("")
         self.labelvniz.setWordWrap(True)
         self.boxlayout.addWidget(self.labelvniz)
+
+        l = QLabel("Самые большие")
+        self.boxlayout.addWidget(l)
 
         self.labelvverh= QLabel("")
         self.labelvverh.setWordWrap(True)
@@ -77,16 +83,33 @@ class MainWindow(QMainWindow):
 
         self.d = collections.defaultdict(list)
         self.founded = False
-        self.filters = []
+        self.filters = set()
+        self.inversFilter = True
+
+    def toKB(self, i):
+        i = i // 1024
+        if i < 1024:
+            return str(i) + "kb"
+        i = i // 1024
+        if i < 1024:
+            return str(i) + "mb"
+        i = i // 1024
+        return str(i) + "gb"
 
     def draw(self):
         if self.founded:
             s = ""
             dSorted = collections.defaultdict(list)
-            for i in self.d.keys():
-                if i not in self.filters:
-                    dSorted[i] = self.d[i]
-                    s += i + ": " + str(len(self.d[i])) + " "
+            if self.inversFilter:
+                for i in self.d.keys():
+                    if i not in self.filters:
+                        dSorted[i] = self.d[i]
+                        s += i + ": " + str(len(self.d[i])) + " "
+            else:
+                for i in self.d.keys():
+                    if i in self.filters:
+                        dSorted[i] = self.d[i]
+                        s += i + ": " + str(len(self.d[i])) + " "
             self.label.setText("Колво файлов : " + str(sum(list(map(len, dSorted.values())))))
             self.labelPodrobno.setText(s)
 
@@ -99,16 +122,28 @@ class MainWindow(QMainWindow):
             s1 = ""
             s2 = ""
             for i in range(min(20, len(files))):
-                s1 += files[i][0] + " " + str(files[i][1]) + "\n"
-                s2 += files[len(files) - 1 - i][0] + " " + str(files[len(files) - 1 - i][1]) + "\n"
+                s1 += files[i][0] + " " + self.toKB(files[i][1]) + "\n"
+                s2 += files[len(files) - 1 - i][0] + " " + self.toKB(files[len(files) - 1 - i][1]) + "\n"
 
             self.labelvniz.setText(s1)
             self.labelvverh.setText(s2)
         else:
             self.label.setText("Нет такой папки")
+
     def filter(self):
-        self.filters = self.value_b.text().split()
+        a = self.value_b.text()
+        if len(a) > 0:
+            if a[0] == "!":
+                self.inversFilter = True
+                a = a[1:]
+            else:
+                self.inversFilter = False
+            self.filters = set(a.split())
+        else:
+            self.inversFilter = True
+            self.filters = set()
         self.draw()
+
     def reserch(self):
         def getrashirenue(s):
             for i in range(len(s) - 1, -1, -1):
@@ -139,7 +174,7 @@ class MainWindow(QMainWindow):
         else:
             self.founded = False
             self.label.setText("Нет такой папки")
-        self.filter()
+        self.draw()
 
 
 
