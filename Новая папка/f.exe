@@ -1,0 +1,16 @@
+# 1 "Y:\\idetmedvedpolesu\\\315\356\342\340\377 \357\340\357\352\340\\f.cpp"
+
+
+
+ 
+using namespace std;  
+ 
+int main()
+{
+ set <int> s;  
+ s.insert(3);
+ s.insert(2);
+ 
+for (const int &number : s)
+  cout << number;
+}
