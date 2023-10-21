@@ -1,16 +1,16 @@
-#include <set> // подключаем set
-#include <string> // подключаем строки string
-#include <iostream> // подключаем cout
- 
-using namespace std; // чтобы не писать std::
- 
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
 int main()
 {
- set <int> s; // инициализация set
- s.insert(3);
- s.insert(2);
- 
-for (const int &number : s) {
-  cout << number;
-}
+    vector<string> msg {"Hello", "C++", "World", "from", "VS Code", "and the C++ extension!"};
+
+    for (const string& word : msg)
+    {
+        cout << word << " ";
+    }
+    cout << endl;
 }
