@@ -5,6 +5,7 @@ a = []
 with open("russian_nouns.txt", "r", encoding="utf-8") as f:
     for i in f.readlines():
         i = i.strip()
+        i = i.replace("ё", "е")
         a.append(i)
 with open("dobavka.txt", "r", encoding="utf-8") as f:
     for i in f.readlines():

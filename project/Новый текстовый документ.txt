@@ -1,0 +1,287 @@
+class button {
+  public:
+    button (byte pin) {
+      _pin = pin;
+      pinMode(_pin, INPUT_PULLUP);
+    }
+    bool click() {
+      bool btnState = digitalRead(_pin);
+      if (!btnState && !_flag && millis() - _tmr >= 500) {
+        _flag = true;
+        _tmr = millis();
+        return true;
+      }
+      if (btnState && _flag) {
+        _flag = false;
+        _tmr = millis();
+      }
+      return false;
+    }
+  private:
+    byte _pin;
+    uint32_t _tmr;
+    bool _flag;
+};
+
+int curentScreen = 0, maxScreen = 4, mode = 0, setStage = 0;
+
+#include "RTClib.h"
+#include "string.h"
+#include <LiquidCrystal.h>
+#include <Servo.h>
+
+String menuModes[7]= {"Set clock", "Set alarm", "Show Clock", "Cuckoo-clock ON", "Cuckoo-clock OFF", "Alarm ON", "Alarm OFF",};
+
+bool cocoClock = false, isRinging = false, alarmOm = false;
+
+DateTime now, nowLast, alarm;
+
+int delayMillis = 10;
+
+LiquidCrystal lcd(12, 11, 10, 9, 8, 7);
+
+int led = 6;
+RTC_DS1307 rtc;
+
+Servo myservo;
+bool servoState = false;
+
+button btn1(14), btn2(15), btn3(16);
+
+void wellCum() {
+  lcd.setCursor(4, 0);
+  lcd.print("Welcome!");
+  delay(1000);
+
+  lcd.setCursor(0, 2);
+  String message = "Monkey Cock v6.9";
+  for (byte i = 0; i < message.length(); i++) {
+    lcd.print(message[i]);
+    delay(100);
+  }
+  delay(500);
+}
+
+void changeScrean() {
+  lcd.clear();
+  if (curentScreen == 3) {
+    if ( cocoClock) {
+    lcd.print(menuModes[3]);
+  } else {
+    lcd.print(menuModes[4]);
+  }
+  } else if (curentScreen == 4) { 
+    if (alarmOm) {
+    lcd.print(menuModes[5]);
+  } else {
+    lcd.print(menuModes[6]);
+  }
+  } else {
+    lcd.print(menuModes[curentScreen]);
+  }
+}
+
+void showClock() {
+  lcd.clear();
+  lcd.setCursor(6, 0);
+  lcd.print(now.hour());
+  lcd.print(":"); 
+  lcd.print(now.minute());
+}
+
+void showTimeSet() {
+  lcd.clear();
+  lcd.setCursor(6, 0);
+  lcd.print(now.hour());
+  lcd.print(":"); 
+  lcd.print(now.minute());
+  int p = 6 + setStage;
+  if (p > 7) p++;
+  lcd.setCursor(p, 2);
+  lcd.print("^");
+}
+
+void whileRinging() {
+  lcd.clear();
+  lcd.setCursor(3, 0);
+  lcd.print("WAKE UP"); 
+  if (btn2.click()) {
+      isRinging = false;
+  }
+  if (servoState) {
+    myservo.write(90);
+  } else {
+    Serial.println("■■");
+    Serial.println("■");
+    myservo.write(110);
+  }
+  servoState = !servoState;
+  delay(100);
+}
+
+void cocoRing() {
+    Serial.println("■■");
+    Serial.println("■");
+    digitalWrite(led, HIGH);
+    myservo.write(110);
+    delay(300);
+    myservo.write(90);
+    digitalWrite(led, LOW);
+}
+
+void whileClock() {
+  now = rtc.now();
+  if (now.minute() == alarm.minute() && now.second() == 0 && now.hour() == alarm.hour() && alarmOm) {
+    isRinging = true;
+  } else if (now.minute() == 0 && now.second() == 0 && cocoClock) {
+    cocoRing();
+  } else if (now.minute() != nowLast.minute()) {
+    showClock();
+    nowLast = now;
+  } else if (btn2.click()){
+    mode = 1;
+    changeScrean();
+  }
+}
+
+void whileMenu() {
+  if (btn1.click()){
+    curentScreen += 1;
+    if (curentScreen > maxScreen) {
+      curentScreen = 0;
+    }
+    changeScrean();
+  } else if (btn3.click()){
+    curentScreen -= 1;
+    if (curentScreen < 0) {
+      curentScreen = maxScreen;
+    }
+    changeScrean();
+  } else if (btn2.click()){
+    if (curentScreen == 0) {
+      mode = 2;
+      now = DateTime(0,0, 0,0, 0, 0);
+      showTimeSet();
+    }
+    if (curentScreen == 1) {
+      mode = 2;
+      now = DateTime(0,0, 0,0, 0, 0);
+      showTimeSet();
+    }
+    if (curentScreen == 2) {
+      mode = 0;
+      showClock();
+    }
+    if (curentScreen == 3) {
+      cocoClock = !cocoClock;
+      changeScrean();
+    }
+    if (curentScreen == 4) {
+      alarmOm = !alarmOm;
+      changeScrean();
+    }
+  }
+}
+
+void whileSetClock() {
+  int x;
+  if (btn1.click()){
+    switch (setStage) {
+      case 0:
+        x = now.hour() - 10;
+        if (x < 0) x = 23;
+        now = DateTime(now.year(), now.month(), now.day(), x, now.minute(), 0);
+      break;
+
+      case 1:
+        x = now.hour() - 1;
+        if (x < 0) x = 23;
+        now = DateTime(now.year(), now.month(), now.day(), x, now.minute(), 0);
+      break;
+
+      case 2:
+        x = now.minute() - 10;
+        if (x < 0) x = 59;
+        now = DateTime(now.year(), now.month(), now.day(), now.hour(), x, 0);
+      break;
+
+      case 3:
+        x = now.minute() - 1;
+        if (x < 0) x = 59;
+        now = DateTime(now.year(), now.month(), now.day(), now.hour(), x, 0);
+      break;
+    }
+    showTimeSet();
+  } else if (btn3.click()){
+    switch (setStage) {
+      case 0:
+        x = now.hour() + 10;
+        if (x > 23) x = 0;
+        now = DateTime(now.year(), now.month(), now.day(), x, now.minute(), 0);
+      break;
+
+      case 1:
+        x = now.hour() + 1;
+        if (x > 23) x = 0;
+        now = DateTime(now.year(), now.month(), now.day(), x, now.minute(), 0);
+      break;
+
+      case 2:
+        x = now.minute() + 10;
+        if (x > 59) x = 0;
+        now = DateTime(now.year(), now.month(), now.day(), now.hour(), x, 0);
+      break;
+
+      case 3:
+        x = now.minute() + 1;
+        if (x > 59) x = 0;
+        now = DateTime(now.year(), now.month(), now.day(), now.hour(), x, 0);
+      break;
+    }
+    showTimeSet();
+  } else if (btn2.click()) {
+    setStage += 1;
+    showTimeSet();
+    if (setStage == 4) {
+      if (curentScreen == 0) {
+        rtc.adjust(now);
+      } else {
+        alarm = now;
+      }
+      mode = 1;
+      setStage = 0;
+      changeScrean();
+    }
+  }
+}
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(led, OUTPUT);
+  myservo.attach(5);
+  rtc.begin();
+  lcd.begin(16, 2);
+  cocoRing();
+  cocoRing();
+  cocoRing();
+  cocoRing();
+  cocoRing();
+  wellCum();
+}
+
+void loop() {
+  if (isRinging) {
+    whileRinging();
+  } else {
+    if (mode == 0) {
+      whileClock();
+    }
+    if (mode == 1) { 
+      whileMenu();
+    }
+    if (mode == 2) {
+      whileSetClock();
+    }
+  }
+  delay(delayMillis);
+}
