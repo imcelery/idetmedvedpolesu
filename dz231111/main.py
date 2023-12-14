@@ -2,12 +2,12 @@
 #     for y in range(2):
 #         for z in range(2):
 #             for w in range(2):
-#                 f1 = (x == y) and ((z) or (not w) )
-#                 f2 = not(y or (not x)) or (w == z)
+#                 f1 = (w == x) and ( (not y) or (z))
+#                 f2 = not(x or (not w)) or (y == z)
 #                 print(f"{x} {y} {z} {w} || {int(f1)} {int(f2)}")
-
-# print(bin(1_111_111_110))
 #
+# print(1555555666 // 16 - 1222222222 // 16)
+
 # from turtle import *
 #
 # for steps in range(8):
@@ -39,11 +39,11 @@
 # mainloop()
 
 # s = 0
-# for i1 in "aвест":
-#     for i2 in "aвест":
-#         for i3 in "aвест":
-#             for i4 in "aвест":
-#                 for i5 in "aвест":
+# for i1 in "аглоь":
+#     for i2 in "аглоь":
+#         for i3 in "аглоь":
+#             for i4 in "аглоь":
+#                 for i5 in "аглоь":
 #                     s += 1
 #                     print(i1 + i2 + i3 + i4 + i5 + " " + str(s))
 # print(7 + 3 * pow(37, 2) + 4 * pow(37, 3) + 6 * pow(37, 4) + 2 * pow(37, 6) + 1 * pow(37, 7))
@@ -54,25 +54,25 @@
 #             a.append(y * 37 + x)
 # print(a)
 # print(max(a))
-# a = []
-# mx = 0
-# with open("17.txt", "r") as f:
-#     for i in f.readlines():
-#         b = int(i)
-#         if b % 100 == 19:
-#             mx = max(b, mx)
-#         a.append(b)
-# ms = 0
-# c = 0
-# for i in range(2, len(a)):
-#     if (a[i - 2] % 3 == 0) or (a[i - 1] % 3 == 0) or (a[i] % 3 == 0):
-#         if int(a[i - 2] >= 1000) + int(a[i - 1] >= 1000) + int(a[i] >= 1000) == 2:
-#             sss = a[i - 2] + a[i - 1] + a[i]
-#             if sss > mx:
-#                 c += 1
-#                 ms = max(ms, sss)
-# print(c)
-# print(ms)
+a = []
+mx = 0
+with open("17.txt", "r") as f:
+    for i in f.readlines():
+        b = int(i)
+        if b % 100 == 19:
+            mx = max(b, mx)
+        a.append(b)
+ms = 0
+c = 0
+for i in range(2, len(a)):
+    if (a[i - 2] % 3 == 0) or (a[i - 1] % 3 == 0) or (a[i] % 3 == 0):
+        if int(a[i - 2] >= 1000) + int(a[i - 1] >= 1000) + int(a[i] >= 1000) == 2:
+            sss = a[i - 2] + a[i - 1] + a[i]
+            if sss > mx:
+                c += 1
+                ms = max(ms, sss)
+print(c)
+print(ms)
 
 # def f(x):
 #     if x == 25:
@@ -126,11 +126,11 @@
 #     if a <= pow(10, 10) and a % 2024 == 0:
 #         aa.append(a)
 # print(sorted(aa))
-a = []
-q = []
-with open("27-A.txt", "r") as f:
-    n = f.readline()
-    k = f.readline()
-    for i in f.readlines():
-        a.append(i)
-
+# a = []
+# q = []
+# with open("27-A.txt", "r") as f:
+#     n = f.readline()
+#     k = f.readline()
+#     for i in f.readlines():
+#         a.append(i)
+#
