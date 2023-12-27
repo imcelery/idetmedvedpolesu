@@ -1,38 +1,67 @@
-class Solution:
-    def calculate(self, s: str) -> int:
-        c = -1
-        a = []
-        for i in s:
-            if i in ('+', '-', '*', '/'):
-                if c != -1:
-                    a.append(c)
-                    c = -1
-                a.append(i)
-            elif i != " ":
-                if c == -1:
-                    c = int(i)
-                else:
-                    c = c * 10 + int(i)
-        a.append(c)
-        i = 1
-        while i < len(a) - 1:
-            if a[i] == "*":
-                a[i + 1] = a[i - 1] * a[i + 1]
-                a[i - 1] = None
-                a[i] = None
-            elif a[i] == "/":
-                a[i + 1] = a[i - 1] // a[i + 1]
-                a[i - 1] = None
-                a[i] = None
-            i += 2
+import hashlib
+import os
+import shutil
+from pathlib import Path
 
-        a = list(filter(lambda a: a != None, a))
-        c = a[0]
-        i = 1
-        while i < len(a):
-            if a[i] == "+":
-                c += a[i + 1]
-            elif a[i] == "-":
-                c -= a[i + 1]
-            i += 2
-        return c
+BLOCKSIZE = 65536
+
+def hash_file(path):
+     hasher = hashlib.sha1()
+     with path.open("rb") as file:
+         buf = file.read(BLOCKSIZE)
+         while buf:
+             hasher.update(buf)
+             buf = file.read(BLOCKSIZE)
+     return hasher.hexdigest()
+
+def read_paths_and_hashes(root):
+    hashes = {}
+    for folder, _, files in os.walk(root):
+        for fn in files:
+            hashes[hash_file(Path(folder) / fn)] = fn
+    return hashes
+
+def determine_actions(src_hashes, dst_hashes, src_folder, dst_folder):
+    for sha, filename in src_hashes.items():
+        if sha not in dst_hashes:
+            sourcepath = Path(src_folder) / filename
+            destpath = Path(dst_folder) / filename
+            yield 'copy', sourcepath, destpath
+
+        elif dst_hashes[sha] != filename:
+            olddestpath = Path(dst_folder) / dst_hashes[sha]
+            newdestpath = Path(dst_folder) / filename
+            yield 'move', olddestpath, newdestpath
+
+    for sha, filename in dst_hashes.items():
+        if sha not in src_hashes:
+            yield 'delete', dst_folder / filename
+
+def doActions(actions):
+    for action, *paths in actions:
+         if action == 'copy':
+            shutil.copyfile(*paths)
+         if action == 'move':
+            shutil.move(*paths)
+         if action == 'delete':
+            os.remove(paths[0])
+
+
+def sync(source, dest, isDoing):
+ # шаг 1 с императивным ядром: собрать входные данные
+    source_hashes = read_paths_and_hashes(source)
+    dest_hashes = read_paths_and_hashes(dest)
+ # шаг 2: вызвать функциональное ядро
+    actions = determine_actions(source_hashes, dest_hashes, source, dest)
+    if isDoing:
+        doActions(actions)
+
+if __name__ == '__main__':
+    while True:
+        s = input().split()
+        atr = False
+        if len(s) == 2:
+            atr = s[2] == "--dry-run"
+        sync(s[0], s[1], atr)
+
+
