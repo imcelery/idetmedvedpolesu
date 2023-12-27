@@ -18,6 +18,7 @@ def hash_file(path):
 def read_paths_and_hashes(root):
     hashes = {}
     for folder, _, files in os.walk(root):
+
         for fn in files:
             hashes[hash_file(Path(folder) / fn)] = fn
     return hashes
@@ -36,7 +37,7 @@ def determine_actions(src_hashes, dst_hashes, src_folder, dst_folder):
 
     for sha, filename in dst_hashes.items():
         if sha not in src_hashes:
-            yield 'delete', dst_folder / filename
+            yield 'delete', Path(dst_folder) / filename
 
 def doActions(actions):
     for action, *paths in actions:
@@ -46,7 +47,10 @@ def doActions(actions):
             shutil.move(*paths)
          if action == 'delete':
             os.remove(paths[0])
-
+def printActions(actions):
+    for action, *paths in actions:
+        print(action)
+        print(paths)
 
 def sync(source, dest, isDoing):
  # шаг 1 с императивным ядром: собрать входные данные
@@ -55,18 +59,16 @@ def sync(source, dest, isDoing):
  # шаг 2: вызвать функциональное ядро
     actions = determine_actions(source_hashes, dest_hashes, source, dest)
     if isDoing:
+        print("чтобы эта программа не делала, она сделала")
         doActions(actions)
     else:
-        for action, *paths in actions:
-            print(action)
-            print(paths)
-            print(1)
+        printActions(actions)
 
 if __name__ == '__main__':
     args = sys.argv
     atr = not ("--dry-run" in args)
-    if len(args) >= 2:
-        sync(args[0], args[0], atr)
-        print("чтобы эта программа не делала, она сделала")
+    if len(args) >= 3:
+        sync(args[1], args[2], atr)
+
 
 
