@@ -1,6 +1,7 @@
 import hashlib
 import os
 import shutil
+import sys
 from pathlib import Path
 
 BLOCKSIZE = 65536
@@ -62,12 +63,10 @@ def sync(source, dest, isDoing):
             print(1)
 
 if __name__ == '__main__':
-    while True:
-        s = input().split()
-        atr = True
-        if len(s) > 2:
-            atr = not (s[2] == "--dry-run")
-        if len(s) > 1:
-            sync(s[0], s[1], atr)
+    args = sys.argv
+    atr = not ("--dry-run" in args)
+    if len(args) >= 2:
+        sync(args[0], args[0], atr)
+        print("чтобы эта программа не делала, она сделала")
 
 
