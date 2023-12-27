@@ -55,13 +55,19 @@ def sync(source, dest, isDoing):
     actions = determine_actions(source_hashes, dest_hashes, source, dest)
     if isDoing:
         doActions(actions)
+    else:
+        for action, *paths in actions:
+            print(action)
+            print(paths)
+            print(1)
 
 if __name__ == '__main__':
     while True:
         s = input().split()
-        atr = False
-        if len(s) == 2:
-            atr = s[2] == "--dry-run"
-        sync(s[0], s[1], atr)
+        atr = True
+        if len(s) > 2:
+            atr = not (s[2] == "--dry-run")
+        if len(s) > 1:
+            sync(s[0], s[1], atr)
 
 
