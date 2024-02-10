@@ -6,7 +6,6 @@ from django.http import Http404
 
 from .models import Post
 
-
 def index(request):
     latest_post_list = Post.objects.order_by("-datetime")
     # output = ", ".join([q.title for q in latest_post_list])
