@@ -1,0 +1,28 @@
+img  {
+    width: 100px;
+}
+
+.good {
+    width: 20000px;
+    margin: 20px;
+}
+
+.price slug{
+    color: #f81911b5;
+}
+
+.good div {
+    padding: 10px;
+}
+
+
+div {
+    border:  1px solid black;
+	margin-top: 0;  
+}
+
+.aboba ul {
+    background-color: red;
+    columns: 3;
+}
+
