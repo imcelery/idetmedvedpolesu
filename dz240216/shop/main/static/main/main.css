@@ -1,9 +1,9 @@
 img  {
-    width: 100px;
+    height: 200px;
 }
 
 .good {
-    width: 20000px;
+	flex-basis: 30%;
     margin: 20px;
 }
 
@@ -21,8 +21,10 @@ div {
 	margin-top: 0;  
 }
 
-.aboba ul {
-    background-color: red;
-    columns: 3;
+.aboba {
+	background-color:  red;
+    display: flex;
+	  flex-wrap: wrap;
+	  align-content: stretch;
+	  height: 100%;
 }
-

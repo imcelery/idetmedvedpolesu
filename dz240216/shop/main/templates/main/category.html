@@ -3,9 +3,10 @@
 {% block title %}{{ category.title }}{% endblock %}
 
 {% block content %}
-<ul>
+<div class="aboba">
     {% for good in list_goods %}
         {% include 'main/block_good.html' %}
     {% endfor %}
-</ul>
+		
+</div>
 {% endblock %}

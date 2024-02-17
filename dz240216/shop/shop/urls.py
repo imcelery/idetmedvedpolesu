@@ -26,7 +26,7 @@ urlpatterns = [
     path('category/<int:category_id>', CategoryView.as_view(), name="category"),
     path('good/<int:good_id>', GoodView.as_view(), name="good"),
     path('admin/', admin.site.urls),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
