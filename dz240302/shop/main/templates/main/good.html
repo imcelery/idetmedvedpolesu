@@ -1,0 +1,8 @@
+{% extends 'main/base.html' %}
+
+{% block title %}{{ good.category}} - {{ good.title }}{% endblock %}
+
+{% block content %}
+<a href="{% url 'add_to_cart' good.id %}">Купить</a>
+ {% include 'main/block_good.html' %}
+{% endblock %}
