@@ -43,36 +43,39 @@ import math
 #         ms = min(ms, c[i] + b[i])
 #     print(ms)
 
-with open("27_B.txt") as f:
-    n, k = list(map(int, f.readline().split()))
-    a = []
-    for i in f.readlines():
-        c, b = list(map(int, i.split()))
-        a.append([c, (b + 1) // 2])
-    a.sort()
-
-    r = 0
-    ps = 0
-    a.append(a[-1])
-    s = 0
-    for i in range(n - 1, 0, -1):
-        s += ps * (a[i + 1][0] - a[i][0])
-        ps += a[i][1]
-    pt = 0
-    while r + 1 != n and s > s - a[r + 1][1] * (a[r + 2][0] - a[r + 1][0]) + a[r + 1][1] * (a[r + 1][0] - a[r][0]):
-        r += 1
-        s = s - a[r + 1][1] * (a[r + 2][0] - a[r + 1][0]) + a[r + 1][1] * (a[r + 1][0] - a[r][0])
-        pt += a[r + 1][1]
-    mins = s
-    r = 0
-    ps += a[0][1]
-    for i in range(1, n - 1):
-        s += ps * (a[i][0] - a[i - 1][0])
-        ps += a[i][1]
-        s -= pt * (a[i + 1][0] - a[i][0])
-        pt -= a[i + 1][1]
-        mins = min(s, mins)
-    print(mins)
-
-
-
+# with open("27_B.txt") as f:
+#     n, k = list(map(int, f.readline().split()))
+#     a = []
+#     for i in f.readlines():
+#         c, b = list(map(int, i.split()))
+#         a.append([c, (b + 1) // 2])
+#     a.sort()
+#
+#     r = 0
+#     ps = 0
+#     a.append(a[-1])
+#     s = 0
+#     for i in range(n - 1, 0, -1):
+#         s += ps * (a[i + 1][0] - a[i][0])
+#         ps += a[i][1]
+#     pt = 0
+#     while r + 1 != n and s > s - a[r + 1][1] * (a[r + 2][0] - a[r + 1][0]) + a[r + 1][1] * (a[r + 1][0] - a[r][0]):
+#         r += 1
+#         s = s - a[r + 1][1] * (a[r + 2][0] - a[r + 1][0]) + a[r + 1][1] * (a[r + 1][0] - a[r][0])
+#         pt += a[r + 1][1]
+#     mins = s
+#     r = 0
+#     ps += a[0][1]
+#     for i in range(1, n - 1):
+#         s += ps * (a[i][0] - a[i - 1][0])
+#         ps += a[i][1]
+#         s -= pt * (a[i + 1][0] - a[i][0])
+#         pt -= a[i + 1][1]
+#         mins = min(s, mins)
+#     print(mins)
+#
+s = 0
+for i in range(100, 1000):
+    if "7" in str(i):
+        s += 1
+print(s)
