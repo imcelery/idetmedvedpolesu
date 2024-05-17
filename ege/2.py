@@ -1,6 +1,7 @@
-for x in range(2):
-    for y in range(2):
-        for z in range(2):
-            for w in range(2):
-                o = (not(x) and not(y)) or (y == z) or w
-                print(x, y, z, w, int(o))
+for n in range(2):
+    for k in range(2):
+        for m in range(2):
+            for l in range(2):
+                o = not(n) or k and not(m) or (l == m)
+                if not o:
+                    print(n, k, m, l, int(o))
